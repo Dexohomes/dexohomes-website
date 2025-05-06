@@ -11,13 +11,15 @@ import { toast } from "sonner";
 type QuickContactFormProps = {
   className?: string;
   variant?: "primary" | "secondary";
+  source?: string; // Track which form is submitting
 };
 
-const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormProps) => {
+const QuickContactForm = ({ className, variant = "primary", source = "Quick Contact Form" }: QuickContactFormProps) => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast: uiToast } = useToast();
   const isMobile = useIsMobile();
@@ -40,6 +42,8 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
         location,
         email,
         service: "Quick Inquiry",
+        message,
+        source // Track where the form was submitted from
       });
       
       // Show toast notification
@@ -52,6 +56,7 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
       setPhone("");
       setLocation("");
       setEmail("");
+      setMessage("");
     } catch (error) {
       console.error("Error submitting form:", error);
       toast.error("Error submitting form", {
@@ -106,6 +111,16 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             required
+            className="bg-white"
+          />
+        </div>
+        <div>
+          {!isMobile && <Label htmlFor="message">Message (Optional)</Label>}
+          <Input
+            id="message"
+            placeholder="Your Message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             className="bg-white"
           />
         </div>

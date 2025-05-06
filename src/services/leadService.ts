@@ -11,6 +11,7 @@ export interface Lead {
   created_at: string;
   status: string;
   message?: string;
+  source?: string; // Track source of the lead
 }
 
 export async function getLeads(): Promise<Lead[]> {
@@ -53,6 +54,26 @@ export async function updateLeadStatus(id: number, status: string): Promise<bool
   }
 }
 
+export async function getLeadById(id: number): Promise<Lead | null> {
+  try {
+    const { data, error } = await supabase
+      .from('leads')
+      .select('*')
+      .eq('id', id)
+      .single();
+    
+    if (error) {
+      console.error('Error fetching lead:', error);
+      throw error;
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Error in getLeadById function:', error);
+    return null;
+  }
+}
+
 export async function saveLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'>): Promise<boolean> {
   try {
     console.log("Saving lead:", lead);
@@ -62,6 +83,7 @@ export async function saveLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'>)
         { 
           ...lead, 
           status: 'New',
+          source: lead.source || 'Website Form' // Default source if not provided
         }
       ]);
     

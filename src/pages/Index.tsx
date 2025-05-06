@@ -12,12 +12,15 @@ import Footer from "@/components/Footer";
 import { useReveal } from "@/hooks/useReveal";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, IndianRupee, Star } from "lucide-react";
+import { ArrowRight, IndianRupee, Star, Check, TrendingUp, Award, Shield } from "lucide-react";
 import QuickEstimateSection from "@/components/QuickEstimateSection";
+import QuickContactForm from "@/components/QuickContactForm";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
   const revealRef = useReveal();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // Show welcome toast after 2 seconds
@@ -29,6 +32,9 @@ const Index = () => {
       });
     }, 2000);
 
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+
     return () => clearTimeout(timer);
   }, [toast]);
 
@@ -37,6 +43,43 @@ const Index = () => {
       <Navbar />
       <main className="flex-grow">
         <HeroSection />
+        
+        {/* Best Value Guarantee - Prominently displayed below hero */}
+        <section className="py-6 bg-gradient-to-r from-brand-yellow/10 to-brand-yellow/5">
+          <div className="container mx-auto">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 md:p-6 bg-white rounded-xl shadow-lg border border-brand-yellow/20">
+              <div className="flex items-center gap-3">
+                <div className="rounded-full bg-brand-yellow/20 p-3">
+                  <Shield className="h-6 w-6 text-brand-yellow" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold">Best Value Guarantee</h3>
+                  <p className="text-sm text-gray-600">Highest quality at competitive prices</p>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-3">
+                <div className="rounded-full bg-brand-yellow/20 p-3">
+                  <Award className="h-6 w-6 text-brand-yellow" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold">Premium Materials</h3>
+                  <p className="text-sm text-gray-600">Durable, long-lasting quality</p>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-3">
+                <div className="rounded-full bg-brand-yellow/20 p-3">
+                  <TrendingUp className="h-6 w-6 text-brand-yellow" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold">Transparent Pricing</h3>
+                  <p className="text-sm text-gray-600">No hidden fees or surprises</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
         
         {/* Trust Indicators */}
         <section className="py-8 bg-white">
@@ -101,6 +144,92 @@ const Index = () => {
         
         <ServicesSection />
         
+        {/* Why Choose Us */}
+        <section className="py-16 bg-white reveal-on-scroll">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Dexohomes?</h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                We combine aesthetics with functionality to create spaces that reflect your personality and meet your needs.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition-all">
+                <div className="rounded-full bg-brand-yellow/20 w-14 h-14 flex items-center justify-center mb-4">
+                  <Star className="h-6 w-6 text-brand-yellow" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Premium Quality</h3>
+                <p className="text-gray-600">
+                  We use only the highest quality materials and fixtures to ensure your interiors stand the test of time.
+                </p>
+                <ul className="mt-4 space-y-2">
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Durable materials</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Quality craftsmanship</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Designer furnishings</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition-all">
+                <div className="rounded-full bg-brand-yellow/20 w-14 h-14 flex items-center justify-center mb-4">
+                  <Award className="h-6 w-6 text-brand-yellow" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Expert Design Team</h3>
+                <p className="text-gray-600">
+                  Our award-winning designers bring creativity and technical expertise to every project.
+                </p>
+                <ul className="mt-4 space-y-2">
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Certified designers</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Personalized attention</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Innovative solutions</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition-all">
+                <div className="rounded-full bg-brand-yellow/20 w-14 h-14 flex items-center justify-center mb-4">
+                  <Shield className="h-6 w-6 text-brand-yellow" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Satisfaction Guarantee</h3>
+                <p className="text-gray-600">
+                  We stand behind our work with a satisfaction guarantee and excellent after-service support.
+                </p>
+                <ul className="mt-4 space-y-2">
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">On-time completion</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Budget adherence</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Post-project support</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+        
         <QuickEstimateSection />
         
         <PortfolioSection />
@@ -108,6 +237,69 @@ const Index = () => {
         <ProcessSection />
         
         <TestimonialsSection />
+        
+        {/* Get a Quote Section */}
+        <section className="py-16 bg-gray-50 reveal-on-scroll">
+          <div className="container mx-auto px-4">
+            <div className="grid md:grid-cols-2 gap-10 items-center">
+              <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                <h2 className="text-2xl md:text-3xl font-bold mb-3">Get a Free Quote</h2>
+                <p className="mb-6 text-gray-600">
+                  Fill out the form below and our design consultants will contact you shortly to discuss your project.
+                </p>
+                <QuickContactForm variant="primary" source="Homepage Quote Form" />
+              </div>
+              <div className="space-y-6 md:pl-10">
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                  <div className="flex items-center gap-4">
+                    <div className="rounded-full bg-brand-yellow/20 p-3">
+                      <IndianRupee className="h-6 w-6 text-brand-yellow" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">Transparent Pricing</h3>
+                      <p className="text-gray-600">No hidden costs or surprise charges</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                  <div className="flex items-center gap-4">
+                    <div className="rounded-full bg-brand-yellow/20 p-3">
+                      <Check className="h-6 w-6 text-brand-yellow" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">Quality Guaranteed</h3>
+                      <p className="text-gray-600">Premium materials and expert craftsmanship</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                  <div className="flex items-center gap-4">
+                    <div className="rounded-full bg-brand-yellow/20 p-3">
+                      <Star className="h-6 w-6 text-brand-yellow" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">5-Star Service</h3>
+                      <p className="text-gray-600">Trusted by 500+ satisfied customers</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <Button 
+                  size="lg" 
+                  className="w-full bg-brand-yellow hover:bg-brand-yellow/90 text-black" 
+                  asChild
+                >
+                  <Link to="/price-calculator">
+                    Try Our Price Calculator
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
         
         {/* Mobile App-like CTA section */}
         <section className="py-16 bg-gray-50 reveal-on-scroll">
@@ -142,10 +334,6 @@ const Index = () => {
                       Contact Us
                     </Link>
                   </Button>
-                </div>
-                <div className="mt-6 inline-flex items-center px-4 py-2 bg-green-50 text-green-700 rounded-md">
-                  <IndianRupee className="h-5 w-5 mr-2" />
-                  <span className="font-medium">Best Value Guaranteed</span>
                 </div>
               </div>
               <div className="relative mx-auto max-w-[280px]">

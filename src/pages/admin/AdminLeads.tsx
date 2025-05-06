@@ -26,14 +26,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search, FileDown } from "lucide-react";
-import { getLeads, updateLeadStatus, Lead } from "@/services/leadService";
+import { getLeads, updateLeadStatus, getLeadById, Lead } from "@/services/leadService";
 import { useToast } from "@/hooks/use-toast";
+import LeadDetailView from "@/components/admin/LeadDetailView";
+import { toast } from "sonner";
 
 const AdminLeads = () => {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [loading, setLoading] = useState(true);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [isDetailViewOpen, setIsDetailViewOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -77,6 +81,26 @@ const AdminLeads = () => {
     }
   };
 
+  const openLeadDetails = async (id: number) => {
+    try {
+      const lead = await getLeadById(id);
+      if (lead) {
+        setSelectedLead(lead);
+        setIsDetailViewOpen(true);
+      } else {
+        toast.error("Could not load lead details");
+      }
+    } catch (error) {
+      console.error("Error fetching lead details:", error);
+      toast.error("Error loading lead details");
+    }
+  };
+
+  const closeLeadDetails = () => {
+    setIsDetailViewOpen(false);
+    setSelectedLead(null);
+  };
+
   const filteredLeads = leads.filter(lead => {
     const matchesSearch = 
       lead.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -92,6 +116,46 @@ const AdminLeads = () => {
   // Function to format date string
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString();
+  };
+
+  // Function to handle CSV export
+  const exportToCSV = () => {
+    if (filteredLeads.length === 0) {
+      toast.error("No leads to export");
+      return;
+    }
+
+    // Generate CSV headers
+    const headers = ["Name", "Email", "Phone", "Service", "Location", "Status", "Date", "Source", "Message"];
+    
+    // Generate CSV content
+    const csvContent = [
+      headers.join(','),
+      ...filteredLeads.map(lead => [
+        `"${lead.name}"`,
+        `"${lead.email || ''}"`,
+        `"${lead.phone}"`,
+        `"${lead.service}"`,
+        `"${lead.location}"`,
+        `"${lead.status}"`,
+        `"${formatDate(lead.created_at)}"`,
+        `"${lead.source || 'Website Form'}"`,
+        `"${lead.message?.replace(/"/g, '""') || ''}"`, // Escape quotes in messages
+      ].join(','))
+    ].join('\n');
+    
+    // Create a Blob and download link
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `leads-export-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast.success("Leads exported successfully");
   };
 
   return (
@@ -133,7 +197,7 @@ const AdminLeads = () => {
                 </SelectContent>
               </Select>
             </div>
-            <Button variant="outline" size="icon" onClick={fetchLeads}>
+            <Button variant="outline" size="icon" onClick={exportToCSV}>
               <FileDown className="h-4 w-4" />
               <span className="sr-only">Download CSV</span>
             </Button>
@@ -152,6 +216,7 @@ const AdminLeads = () => {
                     <TableHead>Service</TableHead>
                     <TableHead>Location</TableHead>
                     <TableHead>Date</TableHead>
+                    <TableHead>Source</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
@@ -159,7 +224,7 @@ const AdminLeads = () => {
                 <TableBody>
                   {filteredLeads.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={7} className="text-center py-10">No leads found</TableCell>
+                      <TableCell colSpan={8} className="text-center py-10">No leads found</TableCell>
                     </TableRow>
                   ) : (
                     filteredLeads.map((lead) => (
@@ -172,6 +237,7 @@ const AdminLeads = () => {
                         <TableCell>{lead.service}</TableCell>
                         <TableCell>{lead.location}</TableCell>
                         <TableCell>{formatDate(lead.created_at)}</TableCell>
+                        <TableCell>{lead.source || 'Website Form'}</TableCell>
                         <TableCell>
                           <Select value={lead.status} onValueChange={(status) => handleStatusChange(lead.id, status)}>
                             <SelectTrigger className={`w-28 px-2 py-1 h-auto text-xs ${
@@ -192,8 +258,7 @@ const AdminLeads = () => {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <Button variant="outline" size="sm">View</Button>
-                            <Button variant="outline" size="sm">Edit</Button>
+                            <Button variant="outline" size="sm" onClick={() => openLeadDetails(lead.id)}>View</Button>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -240,6 +305,13 @@ const AdminLeads = () => {
           </div>
         </CardContent>
       </Card>
+      
+      {/* Lead Detail Dialog */}
+      <LeadDetailView 
+        lead={selectedLead}
+        isOpen={isDetailViewOpen}
+        onClose={closeLeadDetails}
+      />
     </div>
   );
 };
