@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { saveLead } from "@/services/leadService";
+import { Label } from "@/components/ui/label";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type QuickContactFormProps = {
   className?: string;
@@ -14,8 +16,10 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
+  const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,8 +30,8 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
         name,
         phone,
         location,
-        email: "",
-        service: "General Inquiry",
+        email,
+        service: "Quick Inquiry", // Changed from "General Inquiry" to differentiate form sources
       });
       
       toast({
@@ -35,9 +39,11 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
         description: "Our team will contact you shortly.",
       });
       
+      // Reset form
       setName("");
       setPhone("");
       setLocation("");
+      setEmail("");
     } catch (error) {
       toast({
         title: "Error submitting form",
@@ -52,9 +58,11 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
 
   return (
     <form onSubmit={handleSubmit} className={className}>
-      <div className="space-y-4">
+      <div className="space-y-3">
         <div>
+          {!isMobile && <Label htmlFor="name">Full Name</Label>}
           <Input
+            id="name"
             placeholder="Your Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -63,7 +71,20 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
           />
         </div>
         <div>
+          {!isMobile && <Label htmlFor="email">Email</Label>}
           <Input
+            id="email"
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="bg-white"
+          />
+        </div>
+        <div>
+          {!isMobile && <Label htmlFor="phone">Phone Number</Label>}
+          <Input
+            id="phone"
             placeholder="Phone Number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
@@ -72,7 +93,9 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
           />
         </div>
         <div>
+          {!isMobile && <Label htmlFor="location">Location</Label>}
           <Input
+            id="location"
             placeholder="Location"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
@@ -92,6 +115,9 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
           >
             {isSubmitting ? "Submitting..." : "Get Free Consultation"}
           </Button>
+          <p className="text-xs text-center mt-2 text-gray-500">
+            We respect your privacy. Your information is secure.
+          </p>
         </div>
       </div>
     </form>

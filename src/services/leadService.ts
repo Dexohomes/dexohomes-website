@@ -13,48 +13,67 @@ export interface Lead {
   message?: string;
 }
 
-export async function getLeads() {
-  const { data, error } = await supabase
-    .from('leads')
-    .select('*')
-    .order('created_at', { ascending: false });
-  
-  if (error) {
-    console.error('Error fetching leads:', error);
+export async function getLeads(): Promise<Lead[]> {
+  try {
+    console.log("Fetching leads...");
+    const { data, error } = await supabase
+      .from('leads')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) {
+      console.error('Error fetching leads:', error);
+      throw error;
+    }
+    
+    console.log("Leads fetched successfully:", data);
+    return data || [];
+  } catch (error) {
+    console.error('Error in getLeads function:', error);
     throw error;
   }
-  
-  return data;
 }
 
-export async function updateLeadStatus(id: number, status: string) {
-  const { error } = await supabase
-    .from('leads')
-    .update({ status })
-    .eq('id', id);
-  
-  if (error) {
-    console.error('Error updating lead status:', error);
+export async function updateLeadStatus(id: number, status: string): Promise<boolean> {
+  try {
+    const { error } = await supabase
+      .from('leads')
+      .update({ status })
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error updating lead status:', error);
+      throw error;
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Error in updateLeadStatus function:', error);
     throw error;
   }
-  
-  return true;
 }
 
-export async function saveLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'>) {
-  const { error } = await supabase
-    .from('leads')
-    .insert([
-      { 
-        ...lead, 
-        status: 'New',
-      }
-    ]);
-  
-  if (error) {
-    console.error('Error saving lead:', error);
+export async function saveLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'>): Promise<boolean> {
+  try {
+    console.log("Saving lead:", lead);
+    const { error } = await supabase
+      .from('leads')
+      .insert([
+        { 
+          ...lead, 
+          status: 'New',
+        }
+      ]);
+    
+    if (error) {
+      console.error('Error saving lead:', error);
+      throw error;
+    }
+    
+    console.log("Lead saved successfully");
+    return true;
+  } catch (error) {
+    console.error('Error in saveLead function:', error);
     throw error;
   }
-  
-  return true;
 }

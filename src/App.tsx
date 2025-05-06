@@ -18,12 +18,15 @@ import PriceCalculator from "./pages/PriceCalculator";
 // Admin page
 import AdminDashboard from "./pages/AdminDashboard";
 
-// Create a client
+// Create a client with more debug info
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5, // 5 minutes
       retry: 1,
+      onError: (err) => {
+        console.error("Query error:", err);
+      },
     },
   },
 });
