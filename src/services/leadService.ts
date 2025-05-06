@@ -63,15 +63,14 @@ export async function saveLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'>)
           ...lead, 
           status: 'New',
         }
-      ])
-      .select();
+      ]);
     
     if (error) {
       console.error('Error saving lead:', error);
       throw error;
     }
     
-    console.log("Lead saved successfully:", data);
+    console.log("Lead saved successfully");
     return true;
   } catch (error) {
     console.error('Error in saveLead function:', error);

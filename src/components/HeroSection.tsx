@@ -13,12 +13,15 @@ const HeroSection = () => {
   const isMobile = useIsMobile();
 
   return (
-    <section className="relative pt-16 pb-12 md:pt-24 md:pb-20 bg-cover bg-center" style={{
-      backgroundImage: isMobile ? 
-        "linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80')" : 
-        "none",
-      backgroundSize: "cover",
-    }}>
+    <section 
+      className="relative pt-16 pb-12 md:pt-24 md:pb-20 bg-cover bg-center" 
+      style={{
+        backgroundImage: isMobile ? 
+          "linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80')" : 
+          "none",
+        backgroundSize: "cover",
+      }}
+    >
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="order-2 lg:order-1">
@@ -105,6 +108,21 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+      
+      {/* Best Value Guarantee Banner for Mobile - Positioned below hero section */}
+      {isMobile && (
+        <div className="container mx-auto px-4 mt-8">
+          <div className="bg-green-50 rounded-lg p-4 shadow-md">
+            <div className="flex items-center justify-center gap-2">
+              <IndianRupee className="h-5 w-5 text-green-600" />
+              <h3 className="text-lg font-bold text-green-800">Best Value Guaranteed</h3>
+            </div>
+            <p className="text-sm text-center text-green-700 mt-1">
+              Premium design services starting at just ₹499/sqft
+            </p>
+          </div>
+        </div>
+      )}
       
       {/* Bottom gradient effect */}
       <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent"></div>

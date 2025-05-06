@@ -24,6 +24,13 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!name || !phone || !location) {
+      toast.error("Please fill all required fields", {
+        description: "Name, phone and location are required",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
@@ -32,7 +39,7 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
         phone,
         location,
         email,
-        service: "Quick Inquiry", // Changed from "General Inquiry" to differentiate form sources
+        service: "Quick Inquiry",
       });
       
       // Show toast notification
@@ -46,10 +53,10 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
       setLocation("");
       setEmail("");
     } catch (error) {
+      console.error("Error submitting form:", error);
       toast.error("Error submitting form", {
         description: "Please try again later.",
       });
-      console.error("Error submitting form:", error);
     } finally {
       setIsSubmitting(false);
     }

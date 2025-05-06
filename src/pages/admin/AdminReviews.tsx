@@ -1,257 +1,161 @@
 
 import React, { useState } from 'react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from '@/components/ui/button';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { Textarea } from '@/components/ui/textarea';
-import { Search, Star, Edit, Trash } from "lucide-react";
-import { useToast } from '@/hooks/use-toast';
-
-// Mock data for reviews
-const mockReviews = [
-  {
-    id: 1,
-    name: "Anjali Sharma",
-    rating: 5,
-    review: "Exceptional service! The team at Dexohomes completely transformed my living room.",
-    date: "2025-04-12"
-  },
-  {
-    id: 2,
-    name: "Rajesh Kumar",
-    rating: 4,
-    review: "Very satisfied with the kitchen renovation. Professional and timely.",
-    date: "2025-04-08"
-  },
-  {
-    id: 3,
-    name: "Priya Patel",
-    rating: 5,
-    review: "Amazing work on our bedroom design. Exactly what we wanted!",
-    date: "2025-03-27"
-  },
-  {
-    id: 4,
-    name: "Aditya Singh",
-    rating: 4,
-    review: "Great attention to detail in our bathroom remodel.",
-    date: "2025-03-15"
-  }
-];
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Star } from "lucide-react";
+import { toast } from 'sonner';
 
 const AdminReviews = () => {
-  const [reviews, setReviews] = useState(mockReviews);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [editReview, setEditReview] = useState<null | {
-    id: number;
-    name: string;
-    rating: number;
-    review: string;
-  }>(null);
-  const { toast } = useToast();
+  const [reviewFilter, setReviewFilter] = useState("all");
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
+  // Mock reviews data
+  const mockReviews = [
+    { id: 1, name: "Anjali Sharma", rating: 5, review: "Exceptional service!", date: "2025-04-12", status: "published" },
+    { id: 2, name: "Rajesh Kumar", rating: 4, review: "Very satisfied with the kitchen renovation.", date: "2025-04-08", status: "published" },
+    { id: 3, name: "Priya Patel", rating: 5, review: "Amazing work on our bedroom design.", date: "2025-03-27", status: "pending" },
+    { id: 4, name: "Vikram Singh", rating: 5, review: "The team was professional and delivered on time.", date: "2025-03-15", status: "published" },
+    { id: 5, name: "Neha Gupta", rating: 4, review: "Great attention to detail. Very pleased with the results.", date: "2025-03-10", status: "published" },
+  ];
+  
+  const filteredReviews = reviewFilter === "all" 
+    ? mockReviews 
+    : mockReviews.filter(review => review.status === reviewFilter);
 
-  const filteredReviews = reviews.filter(review =>
-    review.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    review.review.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const handleEdit = (review: typeof reviews[0]) => {
-    setEditReview({
-      id: review.id,
-      name: review.name,
-      rating: review.rating,
-      review: review.review
+  const handleUpdateReviewStatus = (id: number, newStatus: string) => {
+    toast.success(`Review status updated`, {
+      description: `Review #${id} status changed to ${newStatus}`
     });
-  };
-
-  const handleDelete = (id: number) => {
-    setReviews(reviews.filter(review => review.id !== id));
-    toast({
-      title: "Review Deleted",
-      description: "The review has been successfully removed."
-    });
-  };
-
-  const handleSaveEdit = () => {
-    if (editReview) {
-      setReviews(reviews.map(review =>
-        review.id === editReview.id ? { ...review, ...editReview } : review
-      ));
-      setEditReview(null);
-      toast({
-        title: "Review Updated",
-        description: "The review has been successfully updated."
-      });
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if (editReview) {
-      setEditReview({
-        ...editReview,
-        [e.target.name]: e.target.value
-      });
-    }
-  };
-
-  const handleRatingChange = (rating: number) => {
-    if (editReview) {
-      setEditReview({
-        ...editReview,
-        rating
-      });
-    }
+    // In a real app, you would update the database
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Customer Reviews Management</h1>
-        <p className="text-gray-600">Manage and moderate customer testimonials</p>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>All Reviews</CardTitle>
-          <CardDescription>View and manage all customer testimonials</CardDescription>
-          <div className="relative mt-4 w-full sm:w-80">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-            <Input
-              placeholder="Search reviews..."
-              value={searchTerm}
-              onChange={handleSearch}
-              className="pl-8"
-            />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableCaption>A list of all customer reviews.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Rating</TableHead>
-                <TableHead className="w-[400px]">Review</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredReviews.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} className="text-center py-8">No reviews found</TableCell>
-                </TableRow>
-              ) : (
-                filteredReviews.map((review) => (
-                  <TableRow key={review.id}>
-                    <TableCell className="font-medium">{review.name}</TableCell>
-                    <TableCell>
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-4 w-4 ${i < review.rating ? 'fill-brand-yellow text-brand-yellow' : 'text-gray-300'}`}
-                          />
-                        ))}
-                      </div>
-                    </TableCell>
-                    <TableCell className="max-w-xs truncate">{review.review}</TableCell>
-                    <TableCell>{review.date}</TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => handleEdit(review)}
-                        >
-                          <Edit className="h-4 w-4 mr-1" />
-                          Edit
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="text-red-500 border-red-200 hover:bg-red-50"
-                          onClick={() => handleDelete(review.id)}
-                        >
-                          <Trash className="h-4 w-4 mr-1" />
-                          Delete
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-
-      {editReview && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Edit Review</CardTitle>
-            <CardDescription>Update the customer review details</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Customer Name</label>
-                <Input 
-                  name="name"
-                  value={editReview.name}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Rating</label>
-                <div className="flex gap-2">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-6 w-6 cursor-pointer ${i < editReview.rating ? 'fill-brand-yellow text-brand-yellow' : 'text-gray-300'}`}
-                      onClick={() => handleRatingChange(i + 1)}
-                    />
-                  ))}
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl flex justify-between items-center">
+          <span>Customer Reviews</span>
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="flex items-center gap-1"
+          >
+            <span className="hidden sm:inline">Add Review</span>
+            <span className="sm:hidden">+</span>
+          </Button>
+        </CardTitle>
+        <CardDescription>
+          Manage and moderate customer testimonials
+        </CardDescription>
+        <div className="flex flex-wrap gap-2 mt-4">
+          <Button 
+            variant={reviewFilter === "all" ? "default" : "outline"} 
+            size="sm"
+            onClick={() => setReviewFilter("all")}
+            className={reviewFilter === "all" ? "bg-brand-yellow text-black hover:bg-brand-yellow/90" : ""}
+          >
+            All Reviews
+          </Button>
+          <Button 
+            variant={reviewFilter === "published" ? "default" : "outline"} 
+            size="sm"
+            onClick={() => setReviewFilter("published")}
+            className={reviewFilter === "published" ? "bg-brand-yellow text-black hover:bg-brand-yellow/90" : ""}
+          >
+            Published
+          </Button>
+          <Button 
+            variant={reviewFilter === "pending" ? "default" : "outline"} 
+            size="sm"
+            onClick={() => setReviewFilter("pending")}
+            className={reviewFilter === "pending" ? "bg-brand-yellow text-black hover:bg-brand-yellow/90" : ""}
+          >
+            Pending
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-4">
+          {filteredReviews.map((review) => (
+            <div key={review.id} className="border rounded-lg p-4 hover:shadow-sm transition-shadow">
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <h3 className="font-medium">{review.name}</h3>
+                  <div className="flex text-yellow-400 mt-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`h-4 w-4 ${i < review.rating ? 'fill-yellow-400' : 'text-gray-300'}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="text-sm text-gray-500">{review.date}</div>
+                  <span 
+                    className={`px-2 py-1 text-xs rounded-full ${
+                      review.status === "published" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                    }`}
+                  >
+                    {review.status === "published" ? "Published" : "Pending"}
+                  </span>
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Review Text</label>
-                <Textarea 
-                  name="review"
-                  value={editReview.review}
-                  onChange={handleInputChange}
-                  rows={4}
-                />
+              <p className="text-gray-600 text-sm mt-2">{review.review}</p>
+              <div className="flex gap-2 mt-4">
+                <Button size="sm" variant="outline" className="text-xs">Edit</Button>
+                {review.status === "pending" ? (
+                  <Button 
+                    size="sm" 
+                    variant="default" 
+                    className="text-xs bg-green-600 hover:bg-green-700"
+                    onClick={() => handleUpdateReviewStatus(review.id, "published")}
+                  >
+                    Approve
+                  </Button>
+                ) : (
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="text-xs"
+                    onClick={() => handleUpdateReviewStatus(review.id, "pending")}
+                  >
+                    Unpublish
+                  </Button>
+                )}
+                <Button size="sm" variant="destructive" className="text-xs">Delete</Button>
               </div>
             </div>
-          </CardContent>
-          <CardFooter className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={() => setEditReview(null)}>Cancel</Button>
-            <Button onClick={handleSaveEdit}>Save Changes</Button>
-          </CardFooter>
-        </Card>
-      )}
-    </div>
+          ))}
+        </div>
+        
+        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+          <h3 className="font-medium mb-2">Review Stats</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+            <div className="p-2 bg-white rounded shadow-sm">
+              <div className="text-xl font-bold">{mockReviews.length}</div>
+              <div className="text-xs text-gray-500">Total Reviews</div>
+            </div>
+            <div className="p-2 bg-white rounded shadow-sm">
+              <div className="text-xl font-bold">
+                {(mockReviews.reduce((acc, review) => acc + review.rating, 0) / mockReviews.length).toFixed(1)}
+              </div>
+              <div className="text-xs text-gray-500">Average Rating</div>
+            </div>
+            <div className="p-2 bg-white rounded shadow-sm">
+              <div className="text-xl font-bold">
+                {mockReviews.filter(r => r.rating === 5).length}
+              </div>
+              <div className="text-xs text-gray-500">5-Star Reviews</div>
+            </div>
+            <div className="p-2 bg-white rounded shadow-sm">
+              <div className="text-xl font-bold">
+                {mockReviews.filter(r => r.status === "published").length}
+              </div>
+              <div className="text-xs text-gray-500">Published</div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

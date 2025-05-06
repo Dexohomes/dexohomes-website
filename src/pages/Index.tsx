@@ -38,35 +38,6 @@ const Index = () => {
       <main className="flex-grow">
         <HeroSection />
         
-        {/* Featured Projects Preview */}
-        <section className="py-12 bg-brand-yellow/5">
-          <div className="container mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold">Featured Projects</h2>
-              <p className="text-brand-gray-dark">Get inspired by our recent transformations</p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-              {[1, 2, 3, 4].map((item) => (
-                <div 
-                  key={item}
-                  className="aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow hover:-translate-y-1 transition-transform cursor-pointer"
-                >
-                  <img 
-                    src={`https://images.unsplash.com/photo-166${item}000000-abcdefghijkl?auto=format&fit=crop&w=800&q=80`}
-                    alt={`Featured project ${item}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-            <div className="text-center mt-8">
-              <Button variant="outline" className="border-brand-yellow text-brand-dark hover:bg-brand-yellow/10" asChild>
-                <Link to="/projects">View All Projects</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-        
         {/* Trust Indicators */}
         <section className="py-8 bg-white">
           <div className="container mx-auto">
@@ -90,6 +61,40 @@ const Index = () => {
                 </div>
                 <div className="text-sm text-brand-gray-dark">Customer Rating</div>
               </div>
+            </div>
+          </div>
+        </section>
+        
+        {/* Recent Projects Preview */}
+        <section className="py-12 bg-brand-yellow/5">
+          <div className="container mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold">Recent Projects</h2>
+              <p className="text-brand-gray-dark">Our latest interior transformations</p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+              {[
+                "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80",
+                "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=800&q=80",
+                "https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?auto=format&fit=crop&w=800&q=80",
+                "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80"
+              ].map((image, index) => (
+                <div 
+                  key={index}
+                  className="aspect-square rounded-lg overflow-hidden shadow-md hover-lift cursor-pointer"
+                >
+                  <img 
+                    src={image}
+                    alt={`Recent project ${index+1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-8">
+              <Button variant="outline" className="border-brand-yellow text-brand-dark hover:bg-brand-yellow/10" asChild>
+                <Link to="/projects">View All Projects</Link>
+              </Button>
             </div>
           </div>
         </section>
