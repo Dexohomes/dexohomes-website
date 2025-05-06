@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { saveLead } from "@/services/leadService";
 
 type QuickContactFormProps = {
   className?: string;
@@ -20,19 +21,33 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
     e.preventDefault();
     setIsSubmitting(true);
     
-    // In a real app, you would send this data to your backend/API
-    // For now, we'll simulate a submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    toast({
-      title: "Form submitted successfully!",
-      description: "Our team will contact you shortly.",
-    });
-    
-    setName("");
-    setPhone("");
-    setLocation("");
-    setIsSubmitting(false);
+    try {
+      await saveLead({
+        name,
+        phone,
+        location,
+        email: "",
+        service: "General Inquiry",
+      });
+      
+      toast({
+        title: "Form submitted successfully!",
+        description: "Our team will contact you shortly.",
+      });
+      
+      setName("");
+      setPhone("");
+      setLocation("");
+    } catch (error) {
+      toast({
+        title: "Error submitting form",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
