@@ -33,7 +33,7 @@ const testimonials = [
     avatar: "https://lh3.googleusercontent.com/a-/ALV-UjXZBd86qSkfrDQWhKIH67xHSNW9eNlP_jKR0QfWva9hwYkaZWHw=w90-h90-p-rp-mo-ba1-br100",
     quote: "Very good finishing, thank you Dexo homes.",
     project: "Kitchen Renovation",
-    rating: 4,
+    rating: 5,
   },
   {
     id: 4,
