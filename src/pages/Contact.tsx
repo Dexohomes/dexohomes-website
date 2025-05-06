@@ -62,7 +62,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg text-brand-dark">Phone</h3>
-                    <p className="text-brand-gray-dark">+1 (555) 123-4567</p>
+                    <p className="text-brand-gray-dark">+91 9845092367</p>
                   </div>
                 </div>
                 
@@ -72,7 +72,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg text-brand-dark">Email</h3>
-                    <p className="text-brand-gray-dark">info@dexohomes.com</p>
+                    <p className="text-brand-gray-dark">dexohomes.com@gmail.com</p>
                   </div>
                 </div>
                 
@@ -83,9 +83,9 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-lg text-brand-dark">Visit Us</h3>
                     <p className="text-brand-gray-dark">
-                      123 Design Street<br />
-                      Suite 456<br />
-                      New York, NY 10001
+                      Hbr layout<br />
+                      
+                      Bangalore
                     </p>
                   </div>
                 </div>
