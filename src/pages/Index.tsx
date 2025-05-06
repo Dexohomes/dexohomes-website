@@ -13,7 +13,8 @@ import Footer from "@/components/Footer";
 import { useReveal } from "@/hooks/useReveal";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, IndianRupee } from "lucide-react";
+import QuickEstimateSection from "@/components/QuickEstimateSection";
 
 const Index = () => {
   const revealRef = useReveal();
@@ -52,14 +53,7 @@ const Index = () => {
         
         <ServicesSection />
         
-        <CtaSection 
-          variant="primary"
-          title="Transform Your Space with Expert Design"
-          description="From concept to completion, our interior design experts will guide you through every step of the process."
-          buttonText="Calculate Your Price"
-          buttonLink="/price-calculator"
-          className="reveal-on-scroll"
-        />
+        <QuickEstimateSection />
         
         <PortfolioSection />
         
@@ -82,12 +76,12 @@ const Index = () => {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
                     size="lg"
-                    className="bg-brand-yellow hover:bg-brand-yellow/90 text-black py-6"
+                    className="bg-brand-yellow hover:bg-brand-yellow/90 text-black py-6 group"
                     asChild
                   >
                     <Link to="/price-calculator">
                       Calculate Your Price
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </Button>
                   <Button
@@ -100,6 +94,10 @@ const Index = () => {
                       Contact Us
                     </Link>
                   </Button>
+                </div>
+                <div className="mt-6 inline-flex items-center px-4 py-2 bg-green-50 text-green-700 rounded-md">
+                  <IndianRupee className="h-5 w-5 mr-2" />
+                  <span className="font-medium">Best Value Guaranteed</span>
                 </div>
               </div>
               <div className="relative mx-auto max-w-[280px]">

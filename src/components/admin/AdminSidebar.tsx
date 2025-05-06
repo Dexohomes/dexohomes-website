@@ -5,7 +5,8 @@ import {
   LayoutDashboard, 
   MessageSquare,
   Image,
-  Menu
+  Menu,
+  Star
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -31,6 +32,11 @@ const AdminSidebar = () => {
       name: 'Content',
       path: '/admin/content',
       icon: <Image className="h-5 w-5" />
+    },
+    {
+      name: 'Reviews',
+      path: '/admin/reviews',
+      icon: <Star className="h-5 w-5" />
     }
   ];
 

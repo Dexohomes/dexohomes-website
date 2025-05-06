@@ -19,6 +19,7 @@ import AdminLayout from "./components/admin/AdminLayout";
 import AuthProvider from "./contexts/AuthContext";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import React from "react";
+import AdminReviews from "./pages/admin/AdminReviews";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -50,10 +51,15 @@ const App = () => {
                 
                 {/* Admin Routes */}
                 <Route path="/admin" element={<AdminLogin />} />
-                <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
-                  <Route index element={<AdminDashboard />} />
+                <Route path="/admin/*" element={
+                  <ProtectedRoute>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }>
+                  <Route path="" element={<AdminDashboard />} />
                   <Route path="leads" element={<AdminLeads />} />
                   <Route path="content" element={<AdminContent />} />
+                  <Route path="reviews" element={<AdminReviews />} />
                 </Route>
                 
                 {/* Catch-all route */}
