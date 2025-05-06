@@ -8,12 +8,11 @@ import PortfolioSection from "@/components/PortfolioSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import ProcessSection from "@/components/ProcessSection";
 import CtaSection from "@/components/CtaSection";
-import QuickContactForm from "@/components/QuickContactForm";
 import Footer from "@/components/Footer";
 import { useReveal } from "@/hooks/useReveal";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, IndianRupee } from "lucide-react";
+import { ArrowRight, IndianRupee, Star } from "lucide-react";
 import QuickEstimateSection from "@/components/QuickEstimateSection";
 
 const Index = () => {
@@ -39,14 +38,58 @@ const Index = () => {
       <main className="flex-grow">
         <HeroSection />
         
-        {/* Quick Contact Form Section */}
-        <section className="py-12 bg-gray-50">
+        {/* Featured Projects Preview */}
+        <section className="py-12 bg-brand-yellow/5">
           <div className="container mx-auto">
-            <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl p-6 transform translate-y-[-3rem] reveal-on-scroll">
-              <h3 className="text-xl font-bold text-center text-brand-dark mb-4">
-                Get a Free Consultation
-              </h3>
-              <QuickContactForm />
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold">Featured Projects</h2>
+              <p className="text-brand-gray-dark">Get inspired by our recent transformations</p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+              {[1, 2, 3, 4].map((item) => (
+                <div 
+                  key={item}
+                  className="aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow hover:-translate-y-1 transition-transform cursor-pointer"
+                >
+                  <img 
+                    src={`https://images.unsplash.com/photo-166${item}000000-abcdefghijkl?auto=format&fit=crop&w=800&q=80`}
+                    alt={`Featured project ${item}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-8">
+              <Button variant="outline" className="border-brand-yellow text-brand-dark hover:bg-brand-yellow/10" asChild>
+                <Link to="/projects">View All Projects</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+        
+        {/* Trust Indicators */}
+        <section className="py-8 bg-white">
+          <div className="container mx-auto">
+            <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+              <div className="flex flex-col items-center">
+                <div className="text-3xl font-bold text-brand-yellow">500+</div>
+                <div className="text-sm text-brand-gray-dark">Happy Clients</div>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="text-3xl font-bold text-brand-yellow">15+</div>
+                <div className="text-sm text-brand-gray-dark">Years Experience</div>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="text-3xl font-bold text-brand-yellow">1200+</div>
+                <div className="text-sm text-brand-gray-dark">Projects Completed</div>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="flex items-center text-3xl font-bold text-brand-yellow">
+                  4.9
+                  <Star className="h-5 w-5 ml-1 fill-brand-yellow" />
+                </div>
+                <div className="text-sm text-brand-gray-dark">Customer Rating</div>
+              </div>
             </div>
           </div>
         </section>

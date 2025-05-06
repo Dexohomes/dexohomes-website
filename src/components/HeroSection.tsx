@@ -3,8 +3,11 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, IndianRupee } from "lucide-react";
 import { Link } from "react-router-dom";
 import QuickContactForm from "./QuickContactForm";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const HeroSection = () => {
+  const isMobile = useIsMobile();
+
   return (
     <section className="relative min-h-screen pt-24 pb-16 flex items-center">
       {/* Background decorations */}
@@ -63,56 +66,69 @@ const HeroSection = () => {
             </div>
           </div>
 
-          <div 
-            className="bg-white rounded-2xl shadow-2xl p-6 md:p-8 animate-scale-in" 
-            style={{animationDelay: "0.4s"}}
-          >
-            <div className="text-center mb-8 space-y-4">
-              <h2 className="text-3xl font-bold text-brand-dark">Calculate Your Price</h2>
-              <p className="text-brand-gray-dark">Get an estimate for your dream interior design project</p>
-              <div className="flex justify-center">
-                <span className="inline-flex items-center px-4 py-2 bg-green-50 text-green-700 rounded-md">
-                  <IndianRupee className="h-5 w-5 mr-2" />
-                  <span className="text-lg font-medium">Best Value</span>
-                </span>
-              </div>
-              <p className="text-sm text-brand-gray-dark">
-                Our transparent pricing ensures you get the best value for your investment.
-                No hidden fees, no surprises!
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <div className="grid grid-cols-3 gap-3">
-                <div className="bg-gray-50 rounded-lg p-4 text-center hover:bg-gray-100 cursor-pointer transition">
-                  <p className="text-lg font-semibold">Basic</p>
-                  <p className="text-sm text-gray-500">Design Only</p>
+          {/* Price calculator for desktop / Promotional banner for mobile */}
+          {!isMobile ? (
+            <div 
+              className="bg-white rounded-2xl shadow-2xl p-6 md:p-8 animate-scale-in" 
+              style={{animationDelay: "0.4s"}}
+            >
+              <div className="text-center mb-8 space-y-4">
+                <h2 className="text-3xl font-bold text-brand-dark">Calculate Your Price</h2>
+                <p className="text-brand-gray-dark">Get an estimate for your dream interior design project</p>
+                <div className="flex justify-center">
+                  <span className="inline-flex items-center px-4 py-2 bg-green-50 text-green-700 rounded-md">
+                    <IndianRupee className="h-5 w-5 mr-2" />
+                    <span className="text-lg font-medium">Best Value</span>
+                  </span>
                 </div>
-                <div className="bg-yellow-50 rounded-lg p-4 text-center hover:bg-yellow-100 cursor-pointer transition border-2 border-brand-yellow">
-                  <p className="text-lg font-semibold">Standard</p>
-                  <p className="text-sm text-gray-500">Most Popular</p>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-4 text-center hover:bg-gray-100 cursor-pointer transition">
-                  <p className="text-lg font-semibold">Premium</p>
-                  <p className="text-sm text-gray-500">Full Service</p>
-                </div>
+                <p className="text-sm text-brand-gray-dark">
+                  Our transparent pricing ensures you get the best value for your investment.
+                  No hidden fees, no surprises!
+                </p>
               </div>
 
-              <Button 
-                className="w-full bg-brand-yellow hover:bg-brand-yellow/90 text-black font-semibold py-6 text-lg group"
-                asChild
-              >
-                <Link to="/price-calculator">
-                  Get Your Personalized Quote
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-
-              <p className="text-xs text-center text-brand-gray-dark">
+              <QuickContactForm className="space-y-4" />
+              
+              <p className="text-xs text-center text-brand-gray-dark mt-4">
                 Free, no-obligation estimate. Receive your detailed quote within 24 hours.
               </p>
             </div>
-          </div>
+          ) : (
+            <div 
+              className="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-2xl shadow-lg p-6 animate-scale-in" 
+              style={{animationDelay: "0.4s"}}
+            >
+              <div className="text-center mb-4">
+                <span className="inline-flex items-center px-4 py-2 bg-yellow-500/20 text-yellow-700 rounded-full mb-3">
+                  <IndianRupee className="h-5 w-5 mr-2" />
+                  <span className="text-lg font-medium">Awesome Pricing</span>
+                </span>
+                <h2 className="text-2xl font-bold text-brand-dark">Get Your Price Calculated</h2>
+                <p className="text-brand-gray-dark my-3">
+                  Custom interior design quote tailored for your space
+                </p>
+              </div>
+              
+              <Button 
+                className="w-full bg-brand-yellow hover:bg-brand-yellow/90 text-black py-5 text-lg group"
+                asChild
+              >
+                <Link to="/price-calculator">
+                  Calculate Your Price Now
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+              
+              <div className="mt-4 grid grid-cols-2 gap-3 text-center">
+                <div className="bg-white/50 p-2 rounded-lg">
+                  <p className="font-medium">Free Consultation</p>
+                </div>
+                <div className="bg-white/50 p-2 rounded-lg">
+                  <p className="font-medium">Best Value</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -19,11 +19,6 @@ const services = [
     description: 'Complete interior design and execution for your entire home.',
     features: ['Custom floor plans', 'Color palette selection', 'Furniture & decor', 'Lighting design', 'Project management'],
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    subServices: [
-      { name: 'Luxury Package', price: 'Starting at $50,000' },
-      { name: 'Premium Package', price: 'Starting at $30,000' },
-      { name: 'Essential Package', price: 'Starting at $15,000' },
-    ]
   },
   {
     id: 'kitchen',
@@ -31,11 +26,6 @@ const services = [
     description: 'Transform your kitchen into a functional and beautiful space.',
     features: ['Custom cabinetry', 'Countertop selection', 'Appliance recommendation', 'Lighting design', 'Storage solutions'],
     image: 'https://images.unsplash.com/photo-1556912173-3bb406ef7e77?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    subServices: [
-      { name: 'Luxury Kitchen', price: 'Starting at $35,000' },
-      { name: 'Premium Kitchen', price: 'Starting at $20,000' },
-      { name: 'Kitchen Refresh', price: 'Starting at $10,000' },
-    ]
   },
   {
     id: 'wardrobe',
@@ -43,11 +33,6 @@ const services = [
     description: 'Personalized storage solutions tailored to your space and needs.',
     features: ['Space planning', 'Material selection', 'Custom compartments', 'Lighting integration', 'Professional installation'],
     image: 'https://images.unsplash.com/photo-1558997519-83c9716d76d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    subServices: [
-      { name: 'Walk-in Closet', price: 'Starting at $15,000' },
-      { name: 'Built-in Wardrobe', price: 'Starting at $8,000' },
-      { name: 'Sliding Door System', price: 'Starting at $5,000' },
-    ]
   },
   {
     id: 'bathroom',
@@ -55,11 +40,6 @@ const services = [
     description: 'Create a luxurious and functional bathroom space.',
     features: ['Fixture selection', 'Tile design', 'Vanity customization', 'Lighting design', 'Storage solutions'],
     image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    subServices: [
-      { name: 'Luxury Bathroom', price: 'Starting at $25,000' },
-      { name: 'Premium Bathroom', price: 'Starting at $15,000' },
-      { name: 'Bathroom Refresh', price: 'Starting at $7,500' },
-    ]
   },
 ];
 
@@ -127,25 +107,14 @@ const ServicesSection = () => {
                         </ul>
                       </div>
                       
-                      <div className="space-y-3 mb-6">
-                        <h4 className="font-semibold text-brand-dark">Available Packages:</h4>
-                        {service.subServices.map((subService, index) => (
-                          <div 
-                            key={index} 
-                            className="flex items-center justify-between py-2 px-4 rounded-lg border border-gray-100 hover:border-brand-yellow/50 hover:bg-brand-yellow/5 transition-colors"
-                          >
-                            <span>{subService.name}</span>
-                            <span className="font-medium text-brand-dark">{subService.price}</span>
-                          </div>
-                        ))}
-                      </div>
-                      
-                      <div className="mt-auto">
+                      <div className="mt-auto flex justify-center">
                         <Button 
-                          className="w-full bg-brand-yellow hover:bg-brand-yellow/90 text-black"
-                          onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
+                          className="w-3/4 bg-brand-yellow hover:bg-brand-yellow/90 text-black"
+                          asChild
                         >
-                          Get a Quote
+                          <Link to="/price-calculator">
+                            Get Best Value Quote
+                          </Link>
                         </Button>
                       </div>
                     </div>
