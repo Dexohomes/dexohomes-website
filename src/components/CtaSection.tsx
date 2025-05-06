@@ -2,6 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 type CtaSectionProps = {
   variant?: "primary" | "secondary";
@@ -9,6 +10,7 @@ type CtaSectionProps = {
   description: string;
   buttonText: string;
   className?: string;
+  buttonLink?: string;
 };
 
 const CtaSection = ({
@@ -17,6 +19,7 @@ const CtaSection = ({
   description,
   buttonText,
   className,
+  buttonLink = "/price-calculator",
 }: CtaSectionProps) => {
   return (
     <section
@@ -44,9 +47,11 @@ const CtaSection = ({
                 ? "bg-black hover:bg-black/90 text-white"
                 : "bg-brand-yellow hover:bg-brand-yellow/90 text-black"
             )}
-            onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
+            asChild
           >
-            {buttonText}
+            <Link to={buttonLink}>
+              {buttonText}
+            </Link>
           </Button>
         </div>
       </div>

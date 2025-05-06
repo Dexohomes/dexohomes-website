@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,6 +19,15 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Services", path: "/services" },
+    { name: "Projects", path: "/projects" },
+    { name: "Contact", path: "/contact" },
+    { name: "Price Calculator", path: "/price-calculator" },
+  ];
+
   return (
     <header
       className={cn(
@@ -29,48 +39,26 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center">
-          <a href="/" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <span className="text-2xl font-bold text-brand-dark">
               <span className="text-brand-yellow">Dexo</span>homes
             </span>
-          </a>
+          </Link>
         </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           <ul className="flex space-x-8">
-            <li>
-              <a
-                href="#services"
-                className="font-medium text-brand-dark hover:text-brand-yellow transition-colors"
-              >
-                Services
-              </a>
-            </li>
-            <li>
-              <a
-                href="#portfolio"
-                className="font-medium text-brand-dark hover:text-brand-yellow transition-colors"
-              >
-                Portfolio
-              </a>
-            </li>
-            <li>
-              <a
-                href="#process"
-                className="font-medium text-brand-dark hover:text-brand-yellow transition-colors"
-              >
-                Our Process
-              </a>
-            </li>
-            <li>
-              <a
-                href="#testimonials"
-                className="font-medium text-brand-dark hover:text-brand-yellow transition-colors"
-              >
-                Testimonials
-              </a>
-            </li>
+            {navItems.map((item) => (
+              <li key={item.name}>
+                <Link
+                  to={item.path}
+                  className="font-medium text-brand-dark hover:text-brand-yellow transition-colors"
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
           </ul>
 
           <Button className="bg-brand-yellow hover:bg-brand-yellow/90 text-black flex items-center gap-2" size="sm">
@@ -108,42 +96,17 @@ const Navbar = () => {
         }`}
       >
         <ul className="flex flex-col space-y-6">
-          <li>
-            <a
-              href="#services"
-              className="text-xl font-medium text-brand-dark hover:text-brand-yellow transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Services
-            </a>
-          </li>
-          <li>
-            <a
-              href="#portfolio"
-              className="text-xl font-medium text-brand-dark hover:text-brand-yellow transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Portfolio
-            </a>
-          </li>
-          <li>
-            <a
-              href="#process"
-              className="text-xl font-medium text-brand-dark hover:text-brand-yellow transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Our Process
-            </a>
-          </li>
-          <li>
-            <a
-              href="#testimonials"
-              className="text-xl font-medium text-brand-dark hover:text-brand-yellow transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Testimonials
-            </a>
-          </li>
+          {navItems.map((item) => (
+            <li key={item.name}>
+              <Link
+                to={item.path}
+                className="text-xl font-medium text-brand-dark hover:text-brand-yellow transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {item.name}
+              </Link>
+            </li>
+          ))}
           <li>
             <Button 
               className="bg-brand-yellow hover:bg-brand-yellow/90 text-black flex items-center gap-2 w-full justify-center" 
