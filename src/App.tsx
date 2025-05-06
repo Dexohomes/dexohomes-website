@@ -15,17 +15,8 @@ import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
 import PriceCalculator from "./pages/PriceCalculator";
 
-// Admin pages
-import AdminLogin from "./pages/admin/AdminLogin";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminLeads from "./pages/admin/AdminLeads";
-import AdminContent from "./pages/admin/AdminContent";
-import AdminReviews from "./pages/admin/AdminReviews";
-
-// Components
-import AdminLayout from "./components/admin/AdminLayout";
-import ProtectedRoute from "./components/admin/ProtectedRoute";
-import AuthProvider from "./contexts/AuthContext";
+// Admin page
+import AdminDashboard from "./pages/AdminDashboard";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -40,39 +31,27 @@ const queryClient = new QueryClient({
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/price-calculator" element={<PriceCalculator />} />
-              
-              {/* Admin Routes */}
-              <Route path="/admin" element={<AdminLogin />} />
-              <Route path="/admin/*" element={
-                <ProtectedRoute>
-                  <AdminLayout />
-                </ProtectedRoute>
-              }>
-                <Route path="" element={<AdminDashboard />} />
-                <Route path="leads" element={<AdminLeads />} />
-                <Route path="content" element={<AdminContent />} />
-                <Route path="reviews" element={<AdminReviews />} />
-              </Route>
-              
-              {/* Catch-all route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/price-calculator" element={<PriceCalculator />} />
+            
+            {/* Admin Route */}
+            <Route path="/admin" element={<AdminDashboard />} />
+            
+            {/* Catch-all route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 };
