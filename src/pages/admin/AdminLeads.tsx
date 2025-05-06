@@ -89,6 +89,11 @@ const AdminLeads = () => {
     return matchesSearch && matchesStatus;
   });
 
+  // Function to format date string
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString();
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -166,7 +171,7 @@ const AdminLeads = () => {
                         </TableCell>
                         <TableCell>{lead.service}</TableCell>
                         <TableCell>{lead.location}</TableCell>
-                        <TableCell>{new Date(lead.date).toLocaleDateString()}</TableCell>
+                        <TableCell>{formatDate(lead.created_at)}</TableCell>
                         <TableCell>
                           <Select value={lead.status} onValueChange={(status) => handleStatusChange(lead.id, status)}>
                             <SelectTrigger className={`w-28 px-2 py-1 h-auto text-xs ${

@@ -4,11 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 export interface Lead {
   id: number;
   name: string;
-  email: string;
+  email: string | null;
   phone: string;
   service: string;
   location: string;
-  date: string;
+  created_at: string;
   status: string;
   message?: string;
 }
@@ -41,7 +41,7 @@ export async function updateLeadStatus(id: number, status: string) {
   return true;
 }
 
-export async function saveLead(lead: Omit<Lead, 'id' | 'date' | 'status'>) {
+export async function saveLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'>) {
   const { error } = await supabase
     .from('leads')
     .insert([
