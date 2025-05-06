@@ -56,21 +56,22 @@ export async function updateLeadStatus(id: number, status: string): Promise<bool
 export async function saveLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'>): Promise<boolean> {
   try {
     console.log("Saving lead:", lead);
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('leads')
       .insert([
         { 
           ...lead, 
           status: 'New',
         }
-      ]);
+      ])
+      .select();
     
     if (error) {
       console.error('Error saving lead:', error);
       throw error;
     }
     
-    console.log("Lead saved successfully");
+    console.log("Lead saved successfully:", data);
     return true;
   } catch (error) {
     console.error('Error in saveLead function:', error);

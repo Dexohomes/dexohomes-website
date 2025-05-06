@@ -13,14 +13,19 @@ const HeroSection = () => {
   const isMobile = useIsMobile();
 
   return (
-    <section className="relative bg-gradient-to-b from-gray-50 to-white pt-16 pb-12 md:pt-24 md:pb-20">
+    <section className="relative pt-16 pb-12 md:pt-24 md:pb-20 bg-cover bg-center" style={{
+      backgroundImage: isMobile ? 
+        "linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80')" : 
+        "none",
+      backgroundSize: "cover",
+    }}>
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="order-2 lg:order-1">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-brand-dark leading-tight text-balance">
+            <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance ${isMobile ? 'text-white' : 'text-brand-dark'}`}>
               Transform Your Space with Expert Interior Design
             </h1>
-            <p className="mt-6 text-xl text-brand-gray-dark max-w-xl">
+            <p className={`mt-6 text-xl max-w-xl ${isMobile ? 'text-white/90' : 'text-brand-gray-dark'}`}>
               Elevate your home with our professional interior design services. From consultation to execution, we create spaces that reflect your style.
             </p>
             
@@ -32,14 +37,14 @@ const HeroSection = () => {
                 </Link>
               </Button>
               
-              <Button variant="outline" size="lg" className="border-brand-gray-dark text-brand-dark hover:bg-gray-100 py-6" asChild>
+              <Button variant="outline" size="lg" className={`border-brand-gray-dark hover:bg-gray-100 py-6 ${isMobile ? 'bg-white/20 text-white border-white' : 'text-brand-dark'}`} asChild>
                 <Link to="/portfolio">
                   View Our Work
                 </Link>
               </Button>
             </div>
             
-            <div className="mt-8 flex items-center">
+            <div className={`mt-8 flex items-center ${isMobile ? 'bg-white/20 p-3 rounded-lg' : ''}`}>
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((i) => (
                   <div key={i} className="h-10 w-10 rounded-full border-2 border-white overflow-hidden">
@@ -52,7 +57,7 @@ const HeroSection = () => {
                 ))}
               </div>
               <div className="ml-4">
-                <div className="text-sm font-medium">
+                <div className={`text-sm font-medium ${isMobile ? 'text-white' : ''}`}>
                   Trusted by 500+ happy clients
                 </div>
                 <div className="flex text-yellow-400">
@@ -78,7 +83,7 @@ const HeroSection = () => {
                 </CardContent>
               </Card>
             ) : (
-              <div className="bg-brand-yellow p-4 rounded-lg shadow-lg text-center">
+              <div className="bg-brand-yellow p-4 rounded-lg shadow-lg text-center mb-8">
                 <div className="inline-flex items-center px-3 py-1 bg-white/80 rounded-full text-sm font-medium mb-3">
                   <IndianRupee className="h-4 w-4 mr-1" />
                   <span>Best Value Guaranteed</span>

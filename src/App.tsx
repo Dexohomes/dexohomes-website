@@ -24,9 +24,6 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 60 * 5, // 5 minutes
       retry: 1,
-      onError: (err) => {
-        console.error("Query error:", err);
-      },
     },
   },
 });

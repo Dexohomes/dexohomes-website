@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { saveLead } from "@/services/leadService";
 import { Label } from "@/components/ui/label";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { toast } from "sonner";
 
 type QuickContactFormProps = {
   className?: string;
@@ -18,7 +19,7 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
   const [location, setLocation] = useState("");
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
+  const { toast: uiToast } = useToast();
   const isMobile = useIsMobile();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,8 +35,8 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
         service: "Quick Inquiry", // Changed from "General Inquiry" to differentiate form sources
       });
       
-      toast({
-        title: "Form submitted successfully!",
+      // Show toast notification
+      toast.success("Form submitted successfully!", {
         description: "Our team will contact you shortly.",
       });
       
@@ -45,10 +46,8 @@ const QuickContactForm = ({ className, variant = "primary" }: QuickContactFormPr
       setLocation("");
       setEmail("");
     } catch (error) {
-      toast({
-        title: "Error submitting form",
+      toast.error("Error submitting form", {
         description: "Please try again later.",
-        variant: "destructive",
       });
       console.error("Error submitting form:", error);
     } finally {
