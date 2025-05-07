@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, FileDown } from "lucide-react";
+import { Search, FileDown, RefreshCcw } from "lucide-react";
 import { getLeads, updateLeadStatus, getLeadById, Lead } from "@/services/leadService";
 import { useToast } from "@/hooks/use-toast";
 import LeadDetailView from "@/components/admin/LeadDetailView";
@@ -50,13 +50,19 @@ const AdminLeads = () => {
       console.log("Fetching leads...");
       const data = await getLeads();
       console.log("Leads data:", data);
-      setLeads(data || []);
+      
+      if (Array.isArray(data)) {
+        setLeads(data);
+        console.log(`Successfully loaded ${data.length} leads`);
+      } else {
+        console.error("Invalid leads data format:", data);
+        setLeads([]);
+        toast.error("Invalid data format received from server");
+      }
     } catch (error) {
       console.error("Error fetching leads:", error);
-      uiToast({
-        title: "Error loading leads",
-        description: "Please try again later",
-        variant: "destructive",
+      toast.error("Error loading leads", {
+        description: "Please try again later"
       });
     } finally {
       setLoading(false);
@@ -69,17 +75,14 @@ const AdminLeads = () => {
       setLeads(leads.map(lead => 
         lead.id === id ? { ...lead, status } : lead
       ));
-      uiToast({
-        title: "Status updated",
-        description: "Lead status has been updated successfully",
+      toast.success("Status updated", {
+        description: "Lead status has been updated successfully"
       });
     } catch (error) {
-      uiToast({
-        title: "Error updating status",
-        description: "Please try again later",
-        variant: "destructive",
-      });
       console.error("Error updating status:", error);
+      toast.error("Error updating status", {
+        description: "Please try again later"
+      });
     }
   };
 
@@ -169,10 +172,23 @@ const AdminLeads = () => {
 
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle>All Leads</CardTitle>
-          <CardDescription>
-            View and manage leads from all website forms
-          </CardDescription>
+          <div className="flex justify-between items-center">
+            <div>
+              <CardTitle>All Leads</CardTitle>
+              <CardDescription>
+                View and manage leads from all website forms
+              </CardDescription>
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={fetchLeads}
+              className="flex items-center gap-1"
+            >
+              <RefreshCcw className="h-4 w-4" />
+              <span>Refresh</span>
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -226,7 +242,7 @@ const AdminLeads = () => {
                 <TableBody>
                   {filteredLeads.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={8} className="text-center py-10">No leads found</TableCell>
+                      <TableCell colSpan={8} className="text-center py-10">No leads found. Try refreshing or submitting a new lead.</TableCell>
                     </TableRow>
                   ) : (
                     filteredLeads.map((lead) => (

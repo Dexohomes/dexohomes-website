@@ -16,7 +16,7 @@ export interface Lead {
 
 export async function getLeads(): Promise<Lead[]> {
   try {
-    console.log("Fetching leads...");
+    console.log("Fetching leads from Supabase...");
     const { data, error } = await supabase
       .from('leads')
       .select('*')
@@ -27,8 +27,13 @@ export async function getLeads(): Promise<Lead[]> {
       throw error;
     }
     
-    console.log("Leads fetched successfully:", data);
-    return data || [];
+    if (!data) {
+      console.log("No leads data returned");
+      return [];
+    }
+    
+    console.log(`Successfully fetched ${data.length} leads:`, data);
+    return data;
   } catch (error) {
     console.error('Error in getLeads function:', error);
     throw error;
@@ -37,6 +42,7 @@ export async function getLeads(): Promise<Lead[]> {
 
 export async function updateLeadStatus(id: number, status: string): Promise<boolean> {
   try {
+    console.log(`Updating lead ${id} status to ${status}`);
     const { error } = await supabase
       .from('leads')
       .update({ status })
@@ -47,6 +53,7 @@ export async function updateLeadStatus(id: number, status: string): Promise<bool
       throw error;
     }
     
+    console.log(`Lead ${id} status updated successfully`);
     return true;
   } catch (error) {
     console.error('Error in updateLeadStatus function:', error);
@@ -56,6 +63,7 @@ export async function updateLeadStatus(id: number, status: string): Promise<bool
 
 export async function getLeadById(id: number): Promise<Lead | null> {
   try {
+    console.log(`Fetching lead ${id} details`);
     const { data, error } = await supabase
       .from('leads')
       .select('*')
@@ -67,6 +75,7 @@ export async function getLeadById(id: number): Promise<Lead | null> {
       throw error;
     }
     
+    console.log('Lead details fetched successfully:', data);
     return data;
   } catch (error) {
     console.error('Error in getLeadById function:', error);
