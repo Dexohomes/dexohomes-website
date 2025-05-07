@@ -23,7 +23,7 @@ const CtaSection = ({
   buttonText,
   className,
   buttonLink = "/price-calculator",
-  usePopup = false,
+  usePopup = true, // Default to using popup for better lead generation
   popupSource = "CTA Section"
 }: CtaSectionProps) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
