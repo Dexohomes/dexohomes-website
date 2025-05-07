@@ -357,7 +357,8 @@ const Index = () => {
           title="Ready to Transform Your Space?"
           description="Schedule a consultation with our design experts and start your interior transformation journey."
           buttonText="Book a Consultation"
-          buttonLink="/contact"
+          usePopup={true}
+          popupSource="Footer CTA"
           className="reveal-on-scroll"
         />
       </main>

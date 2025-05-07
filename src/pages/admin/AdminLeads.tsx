@@ -27,9 +27,8 @@ import {
 } from "@/components/ui/select";
 import { Search, FileDown } from "lucide-react";
 import { getLeads, updateLeadStatus, getLeadById, Lead } from "@/services/leadService";
-import { useToast } from "@/hooks/use-toast";
-import LeadDetailView from "@/components/admin/LeadDetailView";
 import { toast } from "sonner";
+import LeadDetailView from "@/components/admin/LeadDetailView";
 
 const AdminLeads = () => {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -38,7 +37,6 @@ const AdminLeads = () => {
   const [loading, setLoading] = useState(true);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isDetailViewOpen, setIsDetailViewOpen] = useState(false);
-  const { toast } = useToast();
 
   useEffect(() => {
     fetchLeads();
@@ -48,12 +46,11 @@ const AdminLeads = () => {
     try {
       setLoading(true);
       const data = await getLeads();
+      console.log("Fetched leads:", data);
       setLeads(data);
     } catch (error) {
-      toast({
-        title: "Error loading leads",
-        description: "Please try again later",
-        variant: "destructive",
+      toast.error("Error loading leads", {
+        description: "Please try again later"
       });
       console.error("Error loading leads:", error);
     } finally {
@@ -67,15 +64,12 @@ const AdminLeads = () => {
       setLeads(leads.map(lead => 
         lead.id === id ? { ...lead, status } : lead
       ));
-      toast({
-        title: "Status updated",
-        description: "Lead status has been updated successfully",
+      toast.success("Status updated", {
+        description: "Lead status has been updated successfully"
       });
     } catch (error) {
-      toast({
-        title: "Error updating status",
-        description: "Please try again later",
-        variant: "destructive",
+      toast.error("Error updating status", {
+        description: "Please try again later"
       });
       console.error("Error updating status:", error);
     }
@@ -85,6 +79,7 @@ const AdminLeads = () => {
     try {
       const lead = await getLeadById(id);
       if (lead) {
+        console.log("Selected lead details:", lead);
         setSelectedLead(lead);
         setIsDetailViewOpen(true);
       } else {
