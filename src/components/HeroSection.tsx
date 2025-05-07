@@ -1,16 +1,24 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, ArrowRight, IndianRupee } from "lucide-react";
 import { Link } from "react-router-dom";
 import QuickContactForm from "./QuickContactForm";
 import { useIsMobile } from "@/hooks/use-mobile";
+import PopupContactForm from "./PopupContactForm";
 
 const HeroSection = () => {
   const [formType, setFormType] = useState<"default" | "professional" | "premium">("default");
+  const [showPopup, setShowPopup] = useState(false);
   const isMobile = useIsMobile();
+
+  const scrollToQuoteForm = () => {
+    const quoteFormElement = document.getElementById('quote-form-section');
+    if (quoteFormElement) {
+      quoteFormElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <section 
@@ -33,17 +41,22 @@ const HeroSection = () => {
             </p>
             
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-brand-yellow hover:bg-brand-yellow/90 text-black py-6 group" asChild>
-                <Link to="/contact">
-                  Get Free Consultation
-                  <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
+              <Button 
+                size="lg" 
+                className="bg-brand-yellow hover:bg-brand-yellow/90 text-black py-6 group"
+                onClick={() => setShowPopup(true)}
+              >
+                Get Free Consultation
+                <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
               
-              <Button variant="outline" size="lg" className={`border-brand-gray-dark hover:bg-gray-100 py-6 ${isMobile ? 'bg-white/20 text-white border-white' : 'text-brand-dark'}`} asChild>
-                <Link to="/portfolio">
-                  View Our Work
-                </Link>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className={`border-brand-gray-dark hover:bg-gray-100 py-6 ${isMobile ? 'bg-white/20 text-white border-white' : 'text-brand-dark'}`}
+                onClick={scrollToQuoteForm}
+              >
+                View Our Work
               </Button>
             </div>
             
@@ -82,7 +95,7 @@ const HeroSection = () => {
                     <h2 className="text-2xl font-bold text-brand-dark mb-2">Get Your Price Estimate</h2>
                     <p className="text-brand-gray-dark text-sm">Fill out the form below for a quick estimate</p>
                   </div>
-                  <QuickContactForm />
+                  <QuickContactForm source="Hero Section Form" />
                 </CardContent>
               </Card>
             ) : (
@@ -122,6 +135,14 @@ const HeroSection = () => {
             </p>
           </div>
         </div>
+      )}
+      
+      {/* Contact form popup */}
+      {showPopup && (
+        <PopupContactForm 
+          onClose={() => setShowPopup(false)} 
+          source="Hero Section CTA"
+        />
       )}
       
       {/* Bottom gradient effect */}

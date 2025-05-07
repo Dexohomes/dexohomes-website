@@ -19,6 +19,7 @@ export type Database = {
           name: string
           phone: string
           service: string
+          source: string | null
           status: string
           updated_at: string
         }
@@ -31,6 +32,7 @@ export type Database = {
           name: string
           phone: string
           service: string
+          source?: string | null
           status?: string
           updated_at?: string
         }
@@ -43,6 +45,7 @@ export type Database = {
           name?: string
           phone?: string
           service?: string
+          source?: string | null
           status?: string
           updated_at?: string
         }

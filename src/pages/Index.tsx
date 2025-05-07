@@ -1,5 +1,4 @@
-
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -21,6 +20,7 @@ const Index = () => {
   const revealRef = useReveal();
   const { toast } = useToast();
   const isMobile = useIsMobile();
+  const quoteFormRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     // Show welcome toast after 2 seconds
@@ -142,6 +142,7 @@ const Index = () => {
           </div>
         </section>
         
+        {/* Services Section with scroll to form button */}
         <ServicesSection />
         
         {/* Why Choose Us */}
@@ -232,14 +233,16 @@ const Index = () => {
         
         <QuickEstimateSection />
         
+        {/* Connect Portfolio Section to quote form */}
         <PortfolioSection />
         
+        {/* Connect Process Section to quote form */}
         <ProcessSection />
         
         <TestimonialsSection />
         
         {/* Get a Quote Section */}
-        <section className="py-16 bg-gray-50 reveal-on-scroll">
+        <section id="quote-form-section" ref={quoteFormRef} className="py-16 bg-gray-50 reveal-on-scroll">
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-10 items-center">
               <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg">
@@ -328,11 +331,12 @@ const Index = () => {
                     variant="outline"
                     size="lg"
                     className="border-brand-yellow text-brand-dark hover:text-brand-yellow"
-                    asChild
+                    onClick={() => {
+                      // Scroll to the quote form
+                      quoteFormRef.current?.scrollIntoView({ behavior: 'smooth' });
+                    }}
                   >
-                    <Link to="/contact">
-                      Contact Us
-                    </Link>
+                    Contact Us
                   </Button>
                 </div>
               </div>
@@ -357,7 +361,7 @@ const Index = () => {
           title="Ready to Transform Your Space?"
           description="Schedule a consultation with our design experts and start your interior transformation journey."
           buttonText="Book a Consultation"
-          buttonLink="/contact"
+          scrollToQuoteForm={true}
           className="reveal-on-scroll"
         />
       </main>

@@ -2,10 +2,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
-import { saveLead } from "@/services/leadService";
 import { Label } from "@/components/ui/label";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { saveLead } from "@/services/leadService";
 import { toast } from "sonner";
 
 type QuickContactFormProps = {
@@ -21,7 +20,6 @@ const QuickContactForm = ({ className, variant = "primary", source = "Quick Cont
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast: uiToast } = useToast();
   const isMobile = useIsMobile();
 
   const handleSubmit = async (e: React.FormEvent) => {

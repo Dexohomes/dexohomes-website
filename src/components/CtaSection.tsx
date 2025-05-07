@@ -1,8 +1,9 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import PopupContactForm from "./PopupContactForm";
 
 type CtaSectionProps = {
   variant?: "primary" | "secondary";
@@ -11,6 +12,8 @@ type CtaSectionProps = {
   buttonText: string;
   className?: string;
   buttonLink?: string;
+  usePopup?: boolean;
+  scrollToQuoteForm?: boolean;
 };
 
 const CtaSection = ({
@@ -20,7 +23,23 @@ const CtaSection = ({
   buttonText,
   className,
   buttonLink = "/price-calculator",
+  usePopup = false,
+  scrollToQuoteForm = false,
 }: CtaSectionProps) => {
+  const [showPopup, setShowPopup] = useState(false);
+  
+  const handleButtonClick = () => {
+    if (usePopup) {
+      setShowPopup(true);
+    } else if (scrollToQuoteForm) {
+      // Scroll to the quote form section at the bottom of the page
+      const quoteFormElement = document.getElementById('quote-form-section');
+      if (quoteFormElement) {
+        quoteFormElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <section
       className={cn(
@@ -39,22 +58,44 @@ const CtaSection = ({
           <p className={cn("text-lg mb-8", variant === "secondary" && "text-gray-300")}>
             {description}
           </p>
-          <Button
-            size="lg"
-            className={cn(
-              "px-8 py-6 text-lg",
-              variant === "primary"
-                ? "bg-black hover:bg-black/90 text-white"
-                : "bg-brand-yellow hover:bg-brand-yellow/90 text-black"
-            )}
-            asChild
-          >
-            <Link to={buttonLink}>
+          {usePopup || scrollToQuoteForm ? (
+            <Button
+              size="lg"
+              className={cn(
+                "px-8 py-6 text-lg",
+                variant === "primary"
+                  ? "bg-black hover:bg-black/90 text-white"
+                  : "bg-brand-yellow hover:bg-brand-yellow/90 text-black"
+              )}
+              onClick={handleButtonClick}
+            >
               {buttonText}
-            </Link>
-          </Button>
+            </Button>
+          ) : (
+            <Button
+              size="lg"
+              className={cn(
+                "px-8 py-6 text-lg",
+                variant === "primary"
+                  ? "bg-black hover:bg-black/90 text-white"
+                  : "bg-brand-yellow hover:bg-brand-yellow/90 text-black"
+              )}
+              asChild
+            >
+              <Link to={buttonLink}>
+                {buttonText}
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
+      
+      {showPopup && (
+        <PopupContactForm 
+          onClose={() => setShowPopup(false)} 
+          source={`CTA Section - ${title}`}
+        />
+      )}
     </section>
   );
 };
