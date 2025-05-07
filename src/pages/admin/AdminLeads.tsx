@@ -38,7 +38,7 @@ const AdminLeads = () => {
   const [loading, setLoading] = useState(true);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isDetailViewOpen, setIsDetailViewOpen] = useState(false);
-  const { toast } = useToast();
+  const { toast: uiToast } = useToast();
 
   useEffect(() => {
     fetchLeads();
@@ -50,7 +50,7 @@ const AdminLeads = () => {
       const data = await getLeads();
       setLeads(data);
     } catch (error) {
-      toast({
+      uiToast({
         title: "Error loading leads",
         description: "Please try again later",
         variant: "destructive",
@@ -67,12 +67,12 @@ const AdminLeads = () => {
       setLeads(leads.map(lead => 
         lead.id === id ? { ...lead, status } : lead
       ));
-      toast({
+      uiToast({
         title: "Status updated",
         description: "Lead status has been updated successfully",
       });
     } catch (error) {
-      toast({
+      uiToast({
         title: "Error updating status",
         description: "Please try again later",
         variant: "destructive",
@@ -88,11 +88,17 @@ const AdminLeads = () => {
         setSelectedLead(lead);
         setIsDetailViewOpen(true);
       } else {
-        toast.error("Could not load lead details");
+        toast("Could not load lead details", {
+          description: "Please try again later",
+          position: "top-center",
+        });
       }
     } catch (error) {
       console.error("Error fetching lead details:", error);
-      toast.error("Error loading lead details");
+      toast("Error loading lead details", {
+        description: "Please try again later",
+        position: "top-center",
+      });
     }
   };
 
@@ -106,7 +112,8 @@ const AdminLeads = () => {
       lead.name.toLowerCase().includes(search.toLowerCase()) ||
       (lead.email && lead.email.toLowerCase().includes(search.toLowerCase())) ||
       lead.phone.toLowerCase().includes(search.toLowerCase()) ||
-      lead.location.toLowerCase().includes(search.toLowerCase());
+      lead.location.toLowerCase().includes(search.toLowerCase()) ||
+      (lead.source && lead.source.toLowerCase().includes(search.toLowerCase()));
       
     const matchesStatus = statusFilter === 'all' || lead.status === statusFilter;
     
@@ -121,7 +128,10 @@ const AdminLeads = () => {
   // Function to handle CSV export
   const exportToCSV = () => {
     if (filteredLeads.length === 0) {
-      toast.error("No leads to export");
+      toast("No leads to export", {
+        description: "There are no leads matching your filter criteria",
+        position: "top-center",
+      });
       return;
     }
 
@@ -155,7 +165,9 @@ const AdminLeads = () => {
     link.click();
     document.body.removeChild(link);
     
-    toast.success("Leads exported successfully");
+    toast("Leads exported successfully", {
+      position: "top-center",
+    });
   };
 
   return (
