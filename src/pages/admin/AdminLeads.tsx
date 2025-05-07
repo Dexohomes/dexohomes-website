@@ -38,7 +38,7 @@ const AdminLeads = () => {
   const [loading, setLoading] = useState(true);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isDetailViewOpen, setIsDetailViewOpen] = useState(false);
-  const { toast } = useToast();
+  const { toast: uiToast } = useToast();
 
   useEffect(() => {
     fetchLeads();
@@ -50,7 +50,7 @@ const AdminLeads = () => {
       const data = await getLeads();
       setLeads(data);
     } catch (error) {
-      toast({
+      uiToast({
         title: "Error loading leads",
         description: "Please try again later",
         variant: "destructive",
@@ -67,12 +67,12 @@ const AdminLeads = () => {
       setLeads(leads.map(lead => 
         lead.id === id ? { ...lead, status } : lead
       ));
-      toast({
+      uiToast({
         title: "Status updated",
         description: "Lead status has been updated successfully",
       });
     } catch (error) {
-      toast({
+      uiToast({
         title: "Error updating status",
         description: "Please try again later",
         variant: "destructive",
