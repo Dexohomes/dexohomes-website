@@ -36,7 +36,7 @@ export async function getLeads(): Promise<Lead[]> {
     return data;
   } catch (error) {
     console.error('Error in getLeads function:', error);
-    throw error;
+    return []; // Return empty array instead of throwing to avoid breaking the UI
   }
 }
 

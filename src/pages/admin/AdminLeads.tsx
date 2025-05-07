@@ -54,6 +54,11 @@ const AdminLeads = () => {
       if (Array.isArray(data)) {
         setLeads(data);
         console.log(`Successfully loaded ${data.length} leads`);
+        if (data.length === 0) {
+          toast.info("No leads found", {
+            description: "Your leads will appear here once they are submitted"
+          });
+        }
       } else {
         console.error("Invalid leads data format:", data);
         setLeads([]);
@@ -249,7 +254,7 @@ const AdminLeads = () => {
                       <TableRow key={lead.id}>
                         <TableCell className="font-medium">{lead.name}</TableCell>
                         <TableCell>
-                          <div>{lead.email}</div>
+                          <div>{lead.email || 'N/A'}</div>
                           <div className="text-gray-500">{lead.phone}</div>
                         </TableCell>
                         <TableCell>{lead.service}</TableCell>
