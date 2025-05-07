@@ -3,16 +3,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronRight, ArrowRight, IndianRupee } from "lucide-react";
 import { Link } from "react-router-dom";
 import QuickContactForm from "./QuickContactForm";
 import { useIsMobile } from "@/hooks/use-mobile";
-import CtaPopup from "./CtaPopup";
 
 const HeroSection = () => {
   const [formType, setFormType] = useState<"default" | "professional" | "premium">("default");
   const isMobile = useIsMobile();
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   return (
     <section 
@@ -35,9 +33,11 @@ const HeroSection = () => {
             </p>
             
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-brand-yellow hover:bg-brand-yellow/90 text-black py-6 group" onClick={() => setIsPopupOpen(true)}>
-                Get Free Consultation
-                <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <Button size="lg" className="bg-brand-yellow hover:bg-brand-yellow/90 text-black py-6 group" asChild>
+                <Link to="/contact">
+                  Get Free Consultation
+                  <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
               </Button>
               
               <Button variant="outline" size="lg" className={`border-brand-gray-dark hover:bg-gray-100 py-6 ${isMobile ? 'bg-white/20 text-white border-white' : 'text-brand-dark'}`} asChild>
@@ -45,14 +45,6 @@ const HeroSection = () => {
                   View Our Work
                 </Link>
               </Button>
-
-              <CtaPopup 
-                open={isPopupOpen} 
-                onOpenChange={setIsPopupOpen}
-                source="Hero Section" 
-                title="Get Your Free Design Consultation"
-                description="Our expert designers are ready to help you transform your space."
-              />
             </div>
             
             <div className={`mt-8 flex items-center ${isMobile ? 'bg-white/20 p-3 rounded-lg' : ''}`}>
@@ -96,20 +88,20 @@ const HeroSection = () => {
             ) : (
               <div className="bg-brand-yellow p-4 rounded-lg shadow-lg text-center mb-8">
                 <div className="inline-flex items-center px-3 py-1 bg-white/80 rounded-full text-sm font-medium mb-3">
-                  <svg className="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span>Premium Design Services</span>
+                  <IndianRupee className="h-4 w-4 mr-1" />
+                  <span>Best Value Guaranteed</span>
                 </div>
-                <h2 className="text-2xl font-bold text-black mb-2">Transform Your Space</h2>
-                <p className="text-gray-800 mb-4">Luxury designs at affordable prices!</p>
+                <h2 className="text-2xl font-bold text-black mb-2">Calculate Your Price</h2>
+                <p className="text-gray-800 mb-4">Get a custom quote in minutes!</p>
                 <Button 
                   className="w-full bg-black text-white hover:bg-black/80 py-6"
                   size="lg"
-                  onClick={() => setIsPopupOpen(true)}
+                  asChild
                 >
-                  Get Free Consultation
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <Link to="/price-calculator" className="flex items-center justify-center">
+                    Try Price Calculator
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
                 </Button>
               </div>
             )}
@@ -117,18 +109,16 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* Enhanced Value Proposition Banner for Mobile */}
+      {/* Best Value Guarantee Banner for Mobile - Positioned below hero section */}
       {isMobile && (
         <div className="container mx-auto px-4 mt-8">
-          <div className="bg-white rounded-lg p-4 shadow-md">
+          <div className="bg-green-50 rounded-lg p-4 shadow-md">
             <div className="flex items-center justify-center gap-2">
-              <svg className="h-5 w-5 text-green-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              <h3 className="text-lg font-bold text-green-800">Premium Design Experience</h3>
+              <IndianRupee className="h-5 w-5 text-green-600" />
+              <h3 className="text-lg font-bold text-green-800">Best Value Guaranteed</h3>
             </div>
             <p className="text-sm text-center text-green-700 mt-1">
-              Creating spaces you'll love at prices you can afford
+              Premium design services starting at just ₹499/sqft
             </p>
           </div>
         </div>

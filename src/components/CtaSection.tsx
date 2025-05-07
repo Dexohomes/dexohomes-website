@@ -1,9 +1,8 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import CtaPopup from "./CtaPopup";
 
 type CtaSectionProps = {
   variant?: "primary" | "secondary";
@@ -12,8 +11,6 @@ type CtaSectionProps = {
   buttonText: string;
   className?: string;
   buttonLink?: string;
-  usePopup?: boolean;
-  popupSource?: string;
 };
 
 const CtaSection = ({
@@ -23,17 +20,7 @@ const CtaSection = ({
   buttonText,
   className,
   buttonLink = "/price-calculator",
-  usePopup = true, // Default to using popup for better lead generation
-  popupSource = "CTA Section"
 }: CtaSectionProps) => {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-
-  const handleButtonClick = () => {
-    if (usePopup) {
-      setIsPopupOpen(true);
-    }
-  };
-
   return (
     <section
       className={cn(
@@ -52,43 +39,20 @@ const CtaSection = ({
           <p className={cn("text-lg mb-8", variant === "secondary" && "text-gray-300")}>
             {description}
           </p>
-          {usePopup ? (
-            <>
-              <Button
-                size="lg"
-                className={cn(
-                  "px-8 py-6 text-lg",
-                  variant === "primary"
-                    ? "bg-black hover:bg-black/90 text-white"
-                    : "bg-brand-yellow hover:bg-brand-yellow/90 text-black"
-                )}
-                onClick={handleButtonClick}
-              >
-                {buttonText}
-              </Button>
-              
-              <CtaPopup 
-                open={isPopupOpen}
-                onOpenChange={setIsPopupOpen}
-                source={popupSource}
-              />
-            </>
-          ) : (
-            <Button
-              size="lg"
-              className={cn(
-                "px-8 py-6 text-lg",
-                variant === "primary"
-                  ? "bg-black hover:bg-black/90 text-white"
-                  : "bg-brand-yellow hover:bg-brand-yellow/90 text-black"
-              )}
-              asChild
-            >
-              <Link to={buttonLink}>
-                {buttonText}
-              </Link>
-            </Button>
-          )}
+          <Button
+            size="lg"
+            className={cn(
+              "px-8 py-6 text-lg",
+              variant === "primary"
+                ? "bg-black hover:bg-black/90 text-white"
+                : "bg-brand-yellow hover:bg-brand-yellow/90 text-black"
+            )}
+            asChild
+          >
+            <Link to={buttonLink}>
+              {buttonText}
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
