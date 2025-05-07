@@ -34,7 +34,7 @@ const QuickContactForm = ({ className, variant = "primary", source = "Quick Cont
     setIsSubmitting(true);
     
     try {
-      await saveLead({
+      const result = await saveLead({
         name,
         phone,
         location,
@@ -43,6 +43,8 @@ const QuickContactForm = ({ className, variant = "primary", source = "Quick Cont
         message,
         source // Track where the form was submitted from
       });
+      
+      console.log("Form submission result:", result);
       
       // Show toast notification
       toast.success("Form submitted successfully!", {

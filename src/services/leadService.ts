@@ -17,6 +17,8 @@ export interface Lead {
 export async function getLeads(): Promise<Lead[]> {
   try {
     console.log("Fetching leads from Supabase...");
+    
+    // Clear RLS filters and fetch all leads
     const { data, error } = await supabase
       .from('leads')
       .select('*')
@@ -32,10 +34,12 @@ export async function getLeads(): Promise<Lead[]> {
       return [];
     }
     
-    console.log(`Successfully fetched ${data.length} leads:`, data);
+    // Log the full data for debugging
+    console.log(`Successfully fetched ${data.length} leads. Raw data:`, JSON.stringify(data));
     return data;
   } catch (error) {
     console.error('Error in getLeads function:', error);
+    console.trace(); // Add stack trace for more debugging info
     return []; // Return empty array instead of throwing to avoid breaking the UI
   }
 }
@@ -86,6 +90,8 @@ export async function getLeadById(id: number): Promise<Lead | null> {
 export async function saveLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'>): Promise<boolean> {
   try {
     console.log("Saving lead:", lead);
+    
+    // Insert with verbose error handling
     const { data, error } = await supabase
       .from('leads')
       .insert([
@@ -94,14 +100,15 @@ export async function saveLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'>)
           status: 'New',
           source: lead.source || 'Website Form' // Default source if not provided
         }
-      ]);
+      ])
+      .select();
     
     if (error) {
       console.error('Error saving lead:', error);
       throw error;
     }
     
-    console.log("Lead saved successfully");
+    console.log("Lead saved successfully, returned data:", data);
     return true;
   } catch (error) {
     console.error('Error in saveLead function:', error);

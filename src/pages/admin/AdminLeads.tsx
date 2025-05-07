@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, FileDown, RefreshCcw } from "lucide-react";
+import { Search, FileDown, RefreshCcw, AlertTriangle } from "lucide-react";
 import { getLeads, updateLeadStatus, getLeadById, Lead } from "@/services/leadService";
 import { useToast } from "@/hooks/use-toast";
 import LeadDetailView from "@/components/admin/LeadDetailView";
@@ -38,18 +38,22 @@ const AdminLeads = () => {
   const [loading, setLoading] = useState(true);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isDetailViewOpen, setIsDetailViewOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { toast: uiToast } = useToast();
 
+  // Use this effect to run once on mount
   useEffect(() => {
+    console.log("AdminLeads component mounted, fetching leads...");
     fetchLeads();
   }, []);
 
   const fetchLeads = async () => {
     try {
       setLoading(true);
-      console.log("Fetching leads...");
+      setError(null);
+      console.log("Fetching leads from API...");
       const data = await getLeads();
-      console.log("Leads data:", data);
+      console.log("Leads API response received:", data);
       
       if (Array.isArray(data)) {
         setLeads(data);
@@ -62,10 +66,13 @@ const AdminLeads = () => {
       } else {
         console.error("Invalid leads data format:", data);
         setLeads([]);
+        setError("Invalid data format received");
         toast.error("Invalid data format received from server");
       }
     } catch (error) {
       console.error("Error fetching leads:", error);
+      setError("Error loading leads");
+      setLeads([]);
       toast.error("Error loading leads", {
         description: "Please try again later"
       });
@@ -229,6 +236,17 @@ const AdminLeads = () => {
           <div className="rounded-md border">
             {loading ? (
               <div className="py-10 text-center">Loading leads...</div>
+            ) : error ? (
+              <div className="py-10 text-center">
+                <div className="flex flex-col items-center gap-2">
+                  <AlertTriangle className="h-8 w-8 text-yellow-500" />
+                  <div className="text-lg font-medium">Error loading leads</div>
+                  <div className="text-gray-500">{error}</div>
+                  <Button variant="outline" size="sm" onClick={fetchLeads} className="mt-2">
+                    Try Again
+                  </Button>
+                </div>
+              </div>
             ) : (
               <Table>
                 <TableCaption>A list of all leads from your website forms.</TableCaption>
@@ -247,7 +265,15 @@ const AdminLeads = () => {
                 <TableBody>
                   {filteredLeads.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={8} className="text-center py-10">No leads found. Try refreshing or submitting a new lead.</TableCell>
+                      <TableCell colSpan={8} className="text-center py-10">
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="text-lg font-medium">No leads found</div>
+                          <div className="text-gray-500">Try refreshing or submitting a new lead</div>
+                          <Button variant="outline" size="sm" onClick={fetchLeads} className="mt-2">
+                            Refresh Leads
+                          </Button>
+                        </div>
+                      </TableCell>
                     </TableRow>
                   ) : (
                     filteredLeads.map((lead) => (
