@@ -47,15 +47,17 @@ const AdminLeads = () => {
   const fetchLeads = async () => {
     try {
       setLoading(true);
+      console.log("Fetching leads...");
       const data = await getLeads();
-      setLeads(data);
+      console.log("Leads data:", data);
+      setLeads(data || []);
     } catch (error) {
+      console.error("Error fetching leads:", error);
       uiToast({
         title: "Error loading leads",
         description: "Please try again later",
         variant: "destructive",
       });
-      console.error("Error loading leads:", error);
     } finally {
       setLoading(false);
     }
