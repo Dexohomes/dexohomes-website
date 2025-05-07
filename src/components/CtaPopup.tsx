@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { saveLead } from "@/services/leadService";
 import { toast } from "sonner";
-import { X } from "lucide-react";
 
 interface CtaPopupProps {
   open: boolean;
@@ -53,7 +52,7 @@ const CtaPopup = ({
         email: null,
         service: "Quick Inquiry",
         message,
-        source: source
+        source
       });
       
       toast.success("Thank you for your inquiry!", {
@@ -82,15 +81,6 @@ const CtaPopup = ({
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-4 top-4"
-            onClick={() => onOpenChange(false)}
-          >
-            <X className="h-4 w-4" />
-            <span className="sr-only">Close</span>
-          </Button>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">

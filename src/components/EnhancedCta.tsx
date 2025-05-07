@@ -28,7 +28,7 @@ const EnhancedCta = ({
   return (
     <section className={`relative py-16 overflow-hidden ${className}`}>
       <div className="container mx-auto px-4">
-        <div className={`grid md:grid-cols-2 gap-8 items-center ${imagePosition === 'left' ? 'md:flex-row-reverse' : ''}`}>
+        <div className={`grid md:grid-cols-2 gap-8 items-center ${imagePosition === 'left' ? 'flex-row-reverse' : ''}`}>
           <div className="space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold leading-tight">{title}</h2>
             <p className="text-lg text-gray-700">{description}</p>
