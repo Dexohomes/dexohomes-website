@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logoImage from '../assets/logo.png';
 
 type LogoProps = {
   size?: 'sm' | 'md' | 'lg';
