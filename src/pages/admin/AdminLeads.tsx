@@ -27,9 +27,9 @@ import {
 } from "@/components/ui/select";
 import { Search, FileDown, RefreshCcw, AlertTriangle } from "lucide-react";
 import { getLeads, updateLeadStatus, getLeadById, Lead } from "@/services/leadService";
-import { useToast } from "@/hooks/use-toast";
-import LeadDetailView from "@/components/admin/LeadDetailView";
 import { toast } from "sonner";
+import LeadDetailView from "@/components/admin/LeadDetailView";
+import { handleSupabaseError } from "@/utils/errorHandling";
 
 const AdminLeads = () => {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -39,7 +39,6 @@ const AdminLeads = () => {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isDetailViewOpen, setIsDetailViewOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { toast: uiToast } = useToast();
 
   // Use this effect to run once on mount
   useEffect(() => {
@@ -73,9 +72,7 @@ const AdminLeads = () => {
       console.error("Error fetching leads:", error);
       setError("Error loading leads");
       setLeads([]);
-      toast.error("Error loading leads", {
-        description: "Please try again later"
-      });
+      handleSupabaseError(error, "loading leads");
     } finally {
       setLoading(false);
     }
@@ -91,10 +88,7 @@ const AdminLeads = () => {
         description: "Lead status has been updated successfully"
       });
     } catch (error) {
-      console.error("Error updating status:", error);
-      toast.error("Error updating status", {
-        description: "Please try again later"
-      });
+      handleSupabaseError(error, "updating lead status");
     }
   };
 
@@ -108,8 +102,7 @@ const AdminLeads = () => {
         toast.error("Could not load lead details");
       }
     } catch (error) {
-      console.error("Error fetching lead details:", error);
-      toast.error("Error loading lead details");
+      handleSupabaseError(error, "loading lead details");
     }
   };
 

@@ -26,6 +26,7 @@ export async function getLeads(): Promise<Lead[]> {
     
     if (error) {
       console.error('Error fetching leads:', error);
+      console.error('Error details:', JSON.stringify(error));
       throw error;
     }
     
@@ -34,11 +35,11 @@ export async function getLeads(): Promise<Lead[]> {
       return [];
     }
     
-    console.log(`Successfully fetched ${data.length} leads:`, data);
+    console.log(`Successfully fetched ${data.length} leads. Data:`, data);
     return data;
   } catch (error) {
     console.error('Error in getLeads function:', error);
-    return [];
+    throw error; // Propagate error for better debugging
   }
 }
 
@@ -52,6 +53,7 @@ export async function updateLeadStatus(id: number, status: string): Promise<bool
     
     if (error) {
       console.error('Error updating lead status:', error);
+      console.error('Error details:', JSON.stringify(error));
       throw error;
     }
     
@@ -74,14 +76,15 @@ export async function getLeadById(id: number): Promise<Lead | null> {
     
     if (error) {
       console.error('Error fetching lead:', error);
+      console.error('Error details:', JSON.stringify(error));
       throw error;
     }
     
-    console.log('Lead details fetched successfully');
+    console.log('Lead details fetched successfully:', data);
     return data;
   } catch (error) {
     console.error('Error in getLeadById function:', error);
-    return null;
+    throw error;
   }
 }
 
@@ -92,10 +95,10 @@ export async function saveLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'>)
     // Ensure all required fields are present
     if (!lead.name || !lead.phone || !lead.location || !lead.service) {
       console.error("Missing required fields in lead data");
-      throw new Error("Missing required fields");
+      throw new Error("Missing required fields: name, phone, location and service are required");
     }
     
-    // Allow insert for public users - no auth required
+    // Insert lead with explicit RLS bypass using service_role if needed
     const { data, error } = await supabase
       .from('leads')
       .insert([

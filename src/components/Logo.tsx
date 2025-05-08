@@ -18,7 +18,7 @@ const Logo = ({ size = 'md', className = '' }: LogoProps) => {
   return (
     <Link to="/" className={`flex items-center ${className}`}>
       <img 
-        src={logoImage} 
+        src="/lovable-uploads/7e87ca7d-ce98-4078-b97f-704943d36e26.png" 
         alt="DexoHomes Logo" 
         className={`${sizeClasses[size]} w-auto`} 
       />

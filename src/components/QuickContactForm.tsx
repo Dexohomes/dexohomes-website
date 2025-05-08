@@ -49,7 +49,7 @@ const QuickContactForm = ({ className, variant = "primary", source = "Quick Cont
         phone,
         location,
         email,
-        service: "Quick Inquiry",
+        service: message ? "Custom Inquiry: " + message.substring(0, 20) + "..." : "Quick Inquiry",
         message,
         source: source // Track form source
       });
@@ -76,10 +76,10 @@ const QuickContactForm = ({ className, variant = "primary", source = "Quick Cont
     <form onSubmit={handleSubmit} className={className}>
       <div className="space-y-3">
         <div>
-          {!isMobile && <Label htmlFor="name">Full Name</Label>}
+          {!isMobile && <Label htmlFor="name">Full Name <span className="text-red-500">*</span></Label>}
           <Input
             id="name"
-            placeholder="Your Name"
+            placeholder="Your Name *"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -98,10 +98,10 @@ const QuickContactForm = ({ className, variant = "primary", source = "Quick Cont
           />
         </div>
         <div>
-          {!isMobile && <Label htmlFor="phone">Phone Number</Label>}
+          {!isMobile && <Label htmlFor="phone">Phone Number <span className="text-red-500">*</span></Label>}
           <Input
             id="phone"
-            placeholder="Phone Number"
+            placeholder="Phone Number *"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             required
@@ -109,10 +109,10 @@ const QuickContactForm = ({ className, variant = "primary", source = "Quick Cont
           />
         </div>
         <div>
-          {!isMobile && <Label htmlFor="location">Location</Label>}
+          {!isMobile && <Label htmlFor="location">Location <span className="text-red-500">*</span></Label>}
           <Input
             id="location"
-            placeholder="Location"
+            placeholder="Location *"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             required
