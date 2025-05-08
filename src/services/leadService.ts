@@ -11,14 +11,14 @@ export interface Lead {
   created_at: string;
   status: string;
   message?: string;
-  source?: string; // Track source of the lead
+  source?: string;
 }
 
 export async function getLeads(): Promise<Lead[]> {
   try {
     console.log("Fetching leads from Supabase...");
     
-    // Clear RLS filters and fetch all leads
+    // Fetch all leads with better error handling
     const { data, error } = await supabase
       .from('leads')
       .select('*')
@@ -34,13 +34,11 @@ export async function getLeads(): Promise<Lead[]> {
       return [];
     }
     
-    // Log the full data for debugging
-    console.log(`Successfully fetched ${data.length} leads. Raw data:`, JSON.stringify(data));
+    console.log(`Successfully fetched ${data.length} leads`);
     return data;
   } catch (error) {
     console.error('Error in getLeads function:', error);
-    console.trace(); // Add stack trace for more debugging info
-    return []; // Return empty array instead of throwing to avoid breaking the UI
+    return [];
   }
 }
 
@@ -79,7 +77,7 @@ export async function getLeadById(id: number): Promise<Lead | null> {
       throw error;
     }
     
-    console.log('Lead details fetched successfully:', data);
+    console.log('Lead details fetched successfully');
     return data;
   } catch (error) {
     console.error('Error in getLeadById function:', error);
@@ -89,16 +87,21 @@ export async function getLeadById(id: number): Promise<Lead | null> {
 
 export async function saveLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'>): Promise<boolean> {
   try {
-    console.log("Saving lead:", lead);
+    console.log("Saving lead with data:", JSON.stringify(lead));
     
-    // Insert with verbose error handling
+    // Ensure all required fields are present
+    if (!lead.name || !lead.phone || !lead.location || !lead.service) {
+      console.error("Missing required fields in lead data");
+      throw new Error("Missing required fields");
+    }
+    
     const { data, error } = await supabase
       .from('leads')
       .insert([
         { 
           ...lead, 
           status: 'New',
-          source: lead.source || 'Website Form' // Default source if not provided
+          source: lead.source || 'Website Form'
         }
       ])
       .select();

@@ -1,10 +1,8 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import QuickContactForm from "./QuickContactForm";
-import { toast } from "sonner";
 
 type PopupContactFormProps = {
   onClose: () => void;

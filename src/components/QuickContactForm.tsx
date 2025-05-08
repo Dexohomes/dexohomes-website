@@ -10,7 +10,7 @@ import { toast } from "sonner";
 type QuickContactFormProps = {
   className?: string;
   variant?: "primary" | "secondary";
-  source?: string; // Track which form is submitting
+  source?: string;
 };
 
 const QuickContactForm = ({ className, variant = "primary", source = "Quick Contact Form" }: QuickContactFormProps) => {
@@ -34,6 +34,8 @@ const QuickContactForm = ({ className, variant = "primary", source = "Quick Cont
     setIsSubmitting(true);
     
     try {
+      console.log(`Submitting form from source: ${source}`);
+      
       const result = await saveLead({
         name,
         phone,
@@ -41,12 +43,11 @@ const QuickContactForm = ({ className, variant = "primary", source = "Quick Cont
         email,
         service: "Quick Inquiry",
         message,
-        source // Track where the form was submitted from
+        source: source // Track form source
       });
       
       console.log("Form submission result:", result);
       
-      // Show toast notification
       toast.success("Form submitted successfully!", {
         description: "Our team will contact you shortly.",
       });
