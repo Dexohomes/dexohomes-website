@@ -95,6 +95,7 @@ export async function saveLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'>)
       throw new Error("Missing required fields");
     }
     
+    // Allow insert for public users - no auth required
     const { data, error } = await supabase
       .from('leads')
       .insert([
@@ -103,15 +104,15 @@ export async function saveLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'>)
           status: 'New',
           source: lead.source || 'Website Form'
         }
-      ])
-      .select();
+      ]);
     
     if (error) {
       console.error('Error saving lead:', error);
+      console.error('Error details:', JSON.stringify(error));
       throw error;
     }
     
-    console.log("Lead saved successfully, returned data:", data);
+    console.log("Lead saved successfully");
     return true;
   } catch (error) {
     console.error('Error in saveLead function:', error);

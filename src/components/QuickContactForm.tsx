@@ -22,6 +22,14 @@ const QuickContactForm = ({ className, variant = "primary", source = "Quick Cont
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isMobile = useIsMobile();
 
+  const resetForm = () => {
+    setName("");
+    setPhone("");
+    setLocation("");
+    setEmail("");
+    setMessage("");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !phone || !location) {
@@ -52,16 +60,12 @@ const QuickContactForm = ({ className, variant = "primary", source = "Quick Cont
         description: "Our team will contact you shortly.",
       });
       
-      // Reset form
-      setName("");
-      setPhone("");
-      setLocation("");
-      setEmail("");
-      setMessage("");
+      // Reset form after successful submission
+      resetForm();
     } catch (error) {
       console.error("Error submitting form:", error);
       toast.error("Error submitting form", {
-        description: "Please try again later.",
+        description: "Please try again later or contact us directly.",
       });
     } finally {
       setIsSubmitting(false);
