@@ -34,7 +34,7 @@ export async function getLeads(): Promise<Lead[]> {
       return [];
     }
     
-    console.log(`Successfully fetched ${data.length} leads`);
+    console.log(`Successfully fetched ${data.length} leads:`, data);
     return data;
   } catch (error) {
     console.error('Error in getLeads function:', error);

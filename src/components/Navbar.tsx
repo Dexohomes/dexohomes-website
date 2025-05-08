@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
 import { Link } from "react-router-dom";
+import Logo from "./Logo";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -39,11 +40,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center">
-          <Link to="/" className="flex items-center">
-            <span className="text-2xl font-bold text-brand-dark">
-              <span className="text-brand-yellow">Dexo</span>homes
-            </span>
-          </Link>
+          <Logo size="md" className="mr-2" />
         </div>
 
         {/* Desktop Navigation */}
